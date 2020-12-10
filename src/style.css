@@ -41,3 +41,11 @@ body {
 .alert.alert-info {
     background-color: #FD4E71;
 }
+
+.list-group-item {
+    border: none
+}
+
+.side_detail {
+
+}
