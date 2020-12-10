@@ -1,6 +1,7 @@
 import React from "react";
 import axios from 'axios';
 import {
+    Badge,
     Col,
     Container, ListGroup, Row
 } from "react-bootstrap";
@@ -68,12 +69,22 @@ class NewsList extends React.Component {
                                     {
                                         this.state.articles.map
                                         ((article, index) =>
-                                            <ListGroup.Item className="mb-2" action
+                                            <ListGroup.Item className="my-2" action
                                                             onClick={() => this.showNewsContent(index)}>
-                                            <span>
-                                                {article.title}
-                                            </span>
-                                                <small>12/12/20</small>
+                                                <Badge variant="primary" className="mb-2">{article.source.name}</Badge>
+                                                <h5>
+                                                    {article.title}
+                                                </h5>
+                                                <div className="d-flex">
+                                                    {
+                                                        article.author === null ?
+                                                            ""
+                                                            :
+                                                            <span className="text-info mr-3">{article.author}</span>
+                                                    }
+                                                    <span className="text-secondary">{article.publishedAt}</span>
+                                                </div>
+
                                             </ListGroup.Item>
                                         )
                                     }

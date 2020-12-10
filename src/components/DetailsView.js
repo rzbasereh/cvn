@@ -45,10 +45,15 @@ class DetailsView extends React.Component {
                                 <h3>{this.props.article.title}</h3>
                                 <p className="text-secondary">{this.props.article.description}</p>
                                 <div className="clearfix">
-                                    <div className="float-left">
-                                        <span className="text-secondary">author: </span>
-                                        {this.props.article.author}
-                                    </div>
+                                    {
+                                        this.props.article.author ?
+                                            <div className="float-left">
+                                                <span className="text-secondary">author: </span>
+                                                {this.props.article.author}
+                                            </div>
+                                            :
+                                            ""
+                                    }
                                     <span className="float-right">{this.props.article.publishedAt}</span>
                                 </div>
                             </Col>
