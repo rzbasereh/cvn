@@ -17,7 +17,7 @@ class Home extends React.Component {
         return (
             <Container>
                 <Row>
-                    <Col className="d-flex py-5">
+                    <Col className="d-flex py-5 logo">
                         <img src={Logo} alt=""/>
                         <h4 className="pl-2 pt-2">Covid News</h4>
                     </Col>

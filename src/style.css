@@ -5,6 +5,10 @@ body {
     font-family: 'Poppins Regular';
 }
 
+.logo {
+    z-index: 100;
+}
+
 .card {
     border: none;
     border-radius: 30px;
@@ -47,5 +51,109 @@ body {
 }
 
 .side_detail {
+    position: fixed;
+    top: 0;
+    left: 101%;
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff;
+    transition: left ease-in-out 0.3s;
+}
 
+.side_detail.show {
+    left: 0;
+    z-index: 99;
+}
+
+.side_detail .close {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    background-color: #5A33E4;
+    opacity: 1;
+    color: #ffffff;
+    padding: 1rem;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+}
+
+.side_detail .close:hover {
+    cursor: pointer;
+}
+
+.side_detail .close span {
+    background-color: #5A33E4;
+}
+
+.side_detail .close span:first-child {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 2rem;
+    height: 2rem;
+}
+
+.side_detail .close span:first-child:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2rem;
+    height: 2rem;
+    background-color: #ffffff;
+    border-top-left-radius: 200%;
+}
+
+.side_detail .close span:last-child {
+    position: absolute;
+    top: -2rem;
+    left: 0;
+    width: 2rem;
+    height: 2rem;
+}
+
+.side_detail .close span:last-child:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2rem;
+    height: 2rem;
+    background-color: #ffffff;
+    border-bottom-left-radius: 200%;
+}
+
+/* Text Classification*/
+.text-primary {
+    color: #4B4279;
+    font-family: "Poppins Medium";
+    font-size: 18px;
+}
+
+.text-body {
+    font-family: "Poppins Regular";
+    font-size: 16px;
+    line-height: 26px;
+}
+
+.text-secondary {
+    color: #6d7278;
+    font-family: "Poppins Regular";
+    font-size: 14px;
+}
+
+/* Back Ground Color*/
+.bg-secondary {
+    background-color: #F9FCFF !important;
+    border: 1px solid #F2F2F2;
+}
+
+/* Rounded Borders */
+.rounded-3 {
+    border-radius: 30px !important;
+}
+
+.rounded-1 {
+    border-radius: 10px !important;
 }

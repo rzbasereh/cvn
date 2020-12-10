@@ -26,7 +26,7 @@ class NewsList extends React.Component {
     getNews = (begin) => {
         axios.get('http://newsapi.org/v2/top-headlines', {
             params: {
-                country: 'us',
+                q: 'COVID Vaccine',
                 apiKey: "7beb18d93a494e3ca347e870561b7045"
             }
         })
@@ -50,7 +50,11 @@ class NewsList extends React.Component {
     };
 
     showNewsContent(index) {
-
+        this.setState({
+            ...this.state,
+            show: true,
+            selectedItem: this.state.articles[index]
+        });
     }
 
     render() {
@@ -65,7 +69,7 @@ class NewsList extends React.Component {
                                         this.state.articles.map
                                         ((article, index) =>
                                             <ListGroup.Item className="mb-2" action
-                                                            onClick={this.showNewsContent(index)}>
+                                                            onClick={() => this.showNewsContent(index)}>
                                             <span>
                                                 {article.title}
                                             </span>
@@ -78,7 +82,7 @@ class NewsList extends React.Component {
                         </Row>
                     </Card.Body>
                 </Card>
-                <DetailsView artilce={this.state.selectedItem} show={this.state.show}
+                <DetailsView article={this.state.selectedItem} show={this.state.show}
                              handleClose={this.closeDetailView}/>
             </div>
         );
