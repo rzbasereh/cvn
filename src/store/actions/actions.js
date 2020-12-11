@@ -1,9 +1,8 @@
 import * as types from "./actionTypes";
 
-export const closeSlide = (show) => {
+export const closeSlide = () => {
     return {
       type: types.CLOSE_SLIDE,
-      show: show
     };
 };
 

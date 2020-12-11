@@ -4,12 +4,19 @@ import {
     Container, Row
 } from "react-bootstrap";
 import {FiX} from 'react-icons/fi';
+import {closeSlide} from "../store/actions/actions";
+import {connect} from "react-redux";
+import ReactTimeAgo from "react-time-ago";
+import {Link} from "react-router-dom";
 
 class DetailsView extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            article: {}
+    }
+
+    componentDidMount() {
+        if (this.props.article === null) {
+
         }
     }
 
@@ -23,11 +30,13 @@ class DetailsView extends React.Component {
         return (
             <div className={this.props.show ? "side_detail show" : "side_detail"}>
                 {/* Sider Close */}
-                <div className="close" onClick={this.props.handleClose}>
-                    <span/>
-                    <FiX/>
-                    <span/>
-                </div>
+                <Link to={"/"}>
+                    <div className="close" onClick={this.props.handleClose}>
+                        <span/>
+                        <FiX/>
+                        <span/>
+                    </div>
+                </Link>
                 {/* Sider Content*/}
                 <Container>
                     <div className="px-2 px-md-4">
@@ -50,7 +59,13 @@ class DetailsView extends React.Component {
                                             :
                                             ""
                                     }
-                                    <span className="float-md-right">{this.props.article.publishedAt}</span>
+                                    {
+                                        this.props.article.publishedAt ?
+                                            <span className="float-md-right"><ReactTimeAgo
+                                                date={this.props.article.publishedAt} locale="en-US"/></span>
+                                            :
+                                            ""
+                                    }
                                 </div>
                             </Col>
                         </Row>
@@ -66,4 +81,17 @@ class DetailsView extends React.Component {
     }
 }
 
-export default DetailsView;
+const mapStateToProps = state => {
+    return {
+        show: state.show,
+        article: state.article
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleClose: () => dispatch(closeSlide())
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailsView);

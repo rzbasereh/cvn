@@ -2,22 +2,24 @@ import React from "react";
 import axios from 'axios';
 import {
     Badge,
-    Col, ListGroup, Row
+    Col, Dropdown, Form, ListGroup, Row
 } from "react-bootstrap";
-import DetailsView from "./DetailsView";
+import {setArticle} from "../store/actions/actions";
+import {connect} from "react-redux";
+import ReactTimeAgo from 'react-time-ago'
+import {Link} from "react-router-dom";
 
 class NewsList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             articles: [],
-            selectedItem: {},
-            show: false
         }
     }
 
     componentDidMount() {
         this.getNews();
+        console.log(this.props);
     }
 
     getNews = () => {
@@ -32,68 +34,83 @@ class NewsList extends React.Component {
                     ...this.state,
                     articles: res.data.articles
                 });
-                console.log(res.data);
             })
             .catch(function (err) {
-                console.log(err);
             });
     };
-
-    closeDetailView = () => {
-        this.setState({
-            ...this.state,
-            show: false
-        });
-
-    };
-
-    showNewsContent(index) {
-        this.setState({
-            ...this.state,
-            show: true,
-            selectedItem: this.state.articles[index]
-        });
-
-    }
 
     render() {
         return (
             <div>
-                {/*<Card>*/}
-                {/*    <Card.Body>*/}
-                        <Row>
-                            <Col>
-                                <ListGroup className="px-md-4 my-5">
-                                    {
-                                        this.state.articles.map
-                                        ((article, index) =>
-                                            <ListGroup.Item className="my-2" action
-                                                            onClick={() => this.showNewsContent(index)}>
-                                                <Badge variant="primary" className="mb-2">{article.source.name}</Badge>
-                                                <h5>
-                                                    {article.title}
-                                                </h5>
-                                                <div className="d-md-flex">
-                                                    {
-                                                        article.author === null ?
-                                                            ""
-                                                            :
-                                                            <div className="text-info mr-3">{article.author}</div>
-                                                    }
-                                                    <div className="text-secondary">{article.publishedAt}</div>
-                                                </div>
+                <Row className="px-md-4 my-5">
+                    <Col sm={12}>
+                        <Form className="clearfix">
+                            <Form.Group className="float-left d-flex" controlId="exampleForm.ControlSelect2">
+                                <Form.Label className="text-nowrap mr-2">Sorted by:</Form.Label>
+                                <Form.Control as="select">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </Form.Control>
+                            </Form.Group>
 
-                                            </ListGroup.Item>
-                                        )
-                                    }
-                                </ListGroup>
-                            </Col>
-                        </Row>
-                {/*    </Card.Body>*/}
-                {/*</Card>*/}
+                            <Dropdown className="float-right">
+                                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                                    Filter
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </Form>
+                    </Col>
+                    <Col>
+                        <ListGroup>
+                            {
+                                this.state.articles.map
+                                (article =>
+                                    <ListGroup.Item className="my-2" action>
+                                        <Link to={"?source=" + article.source.name}>
+                                            <Badge variant="primary" className="mb-2">{article.source.name}</Badge>
+                                        </Link>
+                                        <Link to={article.title.replace(/\s+/g, '-').toLowerCase()}
+                                              onClick={() => this.props.setArticle(article)}>
+                                            <h4>
+                                                {article.title}
+                                            </h4>
+                                        </Link>
+                                        <div className="d-md-flex">
+                                            {
+                                                article.author === null ?
+                                                    ""
+                                                    :
+                                                    <div className="text-info mr-3">{article.author}</div>
+                                            }
+                                            <div className="text-secondary text-nowrap"><ReactTimeAgo
+                                                date={article.publishedAt} locale="en-US"/></div>
+                                        </div>
+
+                                    </ListGroup.Item>
+                                )
+                            }
+                        </ListGroup>
+                    </Col>
+                </Row>
             </div>
         );
     }
 }
 
-export default NewsList;
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setArticle: (article) => dispatch(setArticle(article))
+    }
+};
+
+export default connect(null, mapDispatchToProps)(NewsList);

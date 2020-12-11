@@ -1,7 +1,7 @@
 import * as types from "./actions/actionTypes";
 
 const initialState = {
-    show: false,
+    show: true,
     article: {}
 };
 
@@ -17,7 +17,9 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 show: true,
                 article: action.article
-            }
+            };
+        default:
+            return state
     }
 };
 

@@ -12,7 +12,7 @@ import NewsList from "./NewsList";
 
 import {FiTrendingDown, FiTrendingUp} from 'react-icons/fi';
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import DetailsView from "./DetailsView";
 
 class Home extends React.Component {
@@ -111,4 +111,4 @@ class Home extends React.Component {
     }
 }
 
-export default Home;
+export default withRouter(Home);

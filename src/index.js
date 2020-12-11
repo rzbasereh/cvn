@@ -6,7 +6,10 @@ import { createStore } from 'redux';
 import reducer from './store/reducer'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
 
+TimeAgo.addDefaultLocale(en);
 const store = createStore(reducer);
 
 ReactDOM.render(
