@@ -3,7 +3,11 @@ import axios from 'axios';
 import Skeleton from 'react-loading-skeleton';
 import {
     Badge,
-    Col, Dropdown, Form, ListGroup, Row
+    Col,
+    Dropdown,
+    Form, 
+    ListGroup, 
+    Row
 } from "react-bootstrap";
 import {setArticle} from "../store/actions/actions";
 import {connect} from "react-redux";
@@ -27,9 +31,9 @@ class NewsList extends React.Component {
 
     componentDidMount() {
         this.getNews();
-        console.log(this.props);
     }
 
+    //  GET latest news base on user filter and ordering
     getNews = () => {
         this.setState({
             ...this.state,
@@ -60,6 +64,8 @@ class NewsList extends React.Component {
         )
     };
 
+
+    //  Hanle change of sort value
     handleSort = (event) => {
         let sort = event.target.value;
         this.setState({
@@ -98,8 +104,8 @@ class NewsList extends React.Component {
                     </Col>
                     <Col>
                         <ListGroup>
-                            { 
-                                this.state.loading ? 
+                            {
+                                this.state.loading ? // Preview Loading until syncing news 
                                     covers.map(
                                         () =>   <ListGroup.Item className="my-2" action>
                                                     <Skeleton width={80} height={30} className="rounded-pill"/>

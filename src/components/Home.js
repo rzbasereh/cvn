@@ -1,15 +1,15 @@
 import React from "react";
 import {
     Col,
-    Container, Row, Navbar
+    Container, 
+    Row, 
+    Alert,
+    Card
+
 } from "react-bootstrap";
 import Logo from '../Logo.png';
 import virus from '../assets/images/svg/virus.svg';
-import Card from "react-bootstrap/Card";
-import Alert from "react-bootstrap/Alert";
 import NewsList from "./NewsList";
-
-
 import {FiTrendingDown, FiTrendingUp} from 'react-icons/fi';
 import axios from "axios";
 import {Link} from "react-router-dom";
@@ -31,6 +31,7 @@ class Home extends React.Component {
         window.addEventListener('scroll', this.listenScrollEvent)
     }
 
+    // toggle body overflow as toggle of right sider
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.show) {
             document.body.classList.add('overflow-hidden');
@@ -39,7 +40,7 @@ class Home extends React.Component {
         }
     }
 
-
+    // GET online statistics of covid virus
     getVirusData = () => {
         axios({
             method: 'get',

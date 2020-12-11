@@ -18,11 +18,14 @@ a:hover, a:focus {
     background-color: transparent;
 }
 
+
+
+/* scroll-header */
+
 .logo {
     z-index: 100;
 }
 
-/* scroll-header */
 .scroll-header {
     position: fixed;
     top: -100px;
@@ -42,6 +45,7 @@ a:hover, a:focus {
 
 /* end scroll-header */
 
+/* start card design */
 .card {
     border: none;
     border-radius: 30px;
@@ -57,7 +61,9 @@ a:hover, a:focus {
     padding: 2rem 0 1rem;
 }
 
-/* Alert Style */
+/* end card design */
+
+/* start alert style */
 
 .alert {
     border-radius: 10px;
@@ -99,6 +105,10 @@ a:hover, a:focus {
     color: #DF0A56;
 }
 
+/* end alert style */
+
+/* start list style */
+
 .list-group-item {
     border: none
 }
@@ -119,8 +129,35 @@ a:hover, a:focus {
     left: 0;
 }
 
+.list-group-item-action {
+    color: #4B4279;
+    border-radius: 10px;
+    background-color: transparent;
+}
 
-/* DropDowns */
+.list-group-item-action > * {
+    word-break: break-word;
+}
+
+.list-group-item-action:focus, .list-group-item-action:hover {
+    background-color: white;
+    box-shadow: 0 6px 26px #EFEFF7;
+}
+
+.list-group-item-action:not(:last-child):after {
+    content: "";
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 1px;
+    width: 100%;
+    background-color: #F2F2F2;
+}
+
+/* end list style */
+
+/* start dropdowns style */
 
 .dropdown-toggle::after {
     display: none;
@@ -138,8 +175,9 @@ a:hover, a:focus {
 .show > .btn-secondary.dropdown-toggle:focus {
     box-shadow: 0 6px 26px #EFEFF7;
 }
+/* end dropdown styles */
 
-/* Slider Close */
+/* start slider close style */
 
 .side_detail .close {
     position: absolute;
@@ -198,35 +236,9 @@ a:hover, a:focus {
 .side_detail .close:hover {
     cursor: pointer;
 }
+/* end slider close style  */
 
-
-.list-group-item-action {
-    color: #4B4279;
-    border-radius: 10px;
-    background-color: transparent;
-}
-
-.list-group-item-action > * {
-    word-break: break-word;
-}
-
-.list-group-item-action:focus, .list-group-item-action:hover {
-    background-color: white;
-    box-shadow: 0 6px 26px #EFEFF7;
-}
-
-.list-group-item-action:not(:last-child):after {
-    content: "";
-    position: absolute;
-    bottom: -0.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 1px;
-    width: 100%;
-    background-color: #F2F2F2;
-}
-
-/* Budget style */
+/* start budget style */
 .badge {
     padding: 0.5rem;
     border-radius: 2rem;
@@ -235,8 +247,9 @@ a:hover, a:focus {
 .badge-primary {
     background-color: #5A33E4;
 }
+/* end budget style */
 
-/* Text Classification*/
+/* start text classification*/
 .text-primary {
     color: #4B4279 !important;
     font-family: "Poppins Medium";
@@ -268,8 +281,9 @@ a:hover, a:focus {
 .text-danger {
     color: #FD4E71 !important;
 }
+/* end text classification */
 
-/* Back Ground Color*/
+/* start background style*/
 .bg-secondary {
     background-color: #F9FCFF !important;
     border: 1px solid #F2F2F2;
@@ -278,8 +292,9 @@ a:hover, a:focus {
 .bg-secondary > * {
     word-break: break-word;
 }
+/* end background style*/
 
-/* Rounded Borders */
+/* start borders style */
 .rounded-3 {
     border-radius: 30px !important;
 }
@@ -287,6 +302,10 @@ a:hover, a:focus {
 .rounded-1 {
     border-radius: 10px !important;
 }
+
+/* end border stylw */
+
+
 
 .virus-ill {
     position: fixed;

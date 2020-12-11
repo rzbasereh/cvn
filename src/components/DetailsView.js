@@ -1,7 +1,8 @@
 import React from "react";
 import {
     Col,
-    Container, Row
+    Container,
+    Row
 } from "react-bootstrap";
 import {FiX} from 'react-icons/fi';
 import {closeSlide} from "../store/actions/actions";
@@ -12,12 +13,6 @@ import {Link} from "react-router-dom";
 class DetailsView extends React.Component {
     constructor(props) {
         super(props);
-    }
-
-    componentDidMount() {
-        if (this.props.article === null) {
-
-        }
     }
 
     render() {
