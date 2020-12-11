@@ -17,10 +17,10 @@ class NewsList extends React.Component {
     }
 
     componentDidMount() {
-        this.getNews(0);
+        this.getNews();
     }
 
-    getNews = (begin) => {
+    getNews = () => {
         axios.get('http://newsapi.org/v2/top-headlines', {
             params: {
                 q: 'COVID Vaccine',
@@ -43,7 +43,8 @@ class NewsList extends React.Component {
         this.setState({
             ...this.state,
             show: false
-        })
+        });
+
     };
 
     showNewsContent(index) {
@@ -52,6 +53,7 @@ class NewsList extends React.Component {
             show: true,
             selectedItem: this.state.articles[index]
         });
+
     }
 
     render() {
@@ -61,7 +63,7 @@ class NewsList extends React.Component {
                 {/*    <Card.Body>*/}
                         <Row>
                             <Col>
-                                <ListGroup className="px-4 my-5">
+                                <ListGroup className="px-md-4 my-5">
                                     {
                                         this.state.articles.map
                                         ((article, index) =>
@@ -71,14 +73,14 @@ class NewsList extends React.Component {
                                                 <h5>
                                                     {article.title}
                                                 </h5>
-                                                <div className="d-flex">
+                                                <div className="d-md-flex">
                                                     {
                                                         article.author === null ?
                                                             ""
                                                             :
-                                                            <span className="text-info mr-3">{article.author}</span>
+                                                            <div className="text-info mr-3">{article.author}</div>
                                                     }
-                                                    <span className="text-secondary">{article.publishedAt}</span>
+                                                    <div className="text-secondary">{article.publishedAt}</div>
                                                 </div>
 
                                             </ListGroup.Item>
@@ -89,8 +91,6 @@ class NewsList extends React.Component {
                         </Row>
                 {/*    </Card.Body>*/}
                 {/*</Card>*/}
-                <DetailsView article={this.state.selectedItem} show={this.state.show}
-                             handleClose={this.closeDetailView}/>
             </div>
         );
     }

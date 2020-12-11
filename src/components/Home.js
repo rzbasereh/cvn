@@ -12,6 +12,8 @@ import NewsList from "./NewsList";
 
 import {FiTrendingDown, FiTrendingUp} from 'react-icons/fi';
 import axios from "axios";
+import {Link} from "react-router-dom";
+import DetailsView from "./DetailsView";
 
 class Home extends React.Component {
     constructor(props) {
@@ -64,10 +66,10 @@ class Home extends React.Component {
             <Container>
                 <Row>
                     <Col className="py-5">
-                        <div className="d-flex logo">
+                        <Link className="d-flex logo" to="/">
                             <img src={Logo} alt=""/>
                             <h4 className="pl-2 pt-2">Covid News</h4>
-                        </div>
+                        </Link>
                     </Col>
                 </Row>
                 <Row>
@@ -103,6 +105,7 @@ class Home extends React.Component {
                         <img className="virus-ill" src={virus} style={{opacity: this.state.virusOpacity}} alt=""/>
                     </Col>
                 </Row>
+                <DetailsView />
             </Container>
         );
     }

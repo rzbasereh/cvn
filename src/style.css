@@ -6,6 +6,12 @@ body {
     font-family: 'Poppins Regular';
 }
 
+a {
+    color: inherit;
+    text-decoration: none;
+    background-color: transparent;
+}
+
 .logo {
     z-index: 100;
 }
@@ -76,7 +82,7 @@ body {
     top: 0;
     left: 101%;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     background-color: #ffffff;
     transition: left ease-in-out 0.3s;
 }
@@ -149,6 +155,10 @@ body {
     background-color: transparent;
 }
 
+.list-group-item-action > * {
+    word-break: break-word;
+}
+
 .list-group-item-action:focus, .list-group-item-action:hover {
     background-color: white;
     box-shadow: 0 6px 26px #EFEFF7;
@@ -214,6 +224,10 @@ body {
     border: 1px solid #F2F2F2;
 }
 
+.bg-secondary > * {
+    word-break: break-word;
+}
+
 /* Rounded Borders */
 .rounded-3 {
     border-radius: 30px !important;
@@ -230,6 +244,12 @@ body {
     z-index: -1;
     -webkit-animation: verticalShake 2s infinite alternate;
     animation: verticalShake 2s infinite alternate;
+}
+
+@media (max-width: 768px) {
+    .virus-ill {
+        right: -6rem;
+    }
 }
 
 /* Animation */
