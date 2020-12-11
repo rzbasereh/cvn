@@ -21,9 +21,7 @@ class DetailsView extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.article !== this.props.article) {
 
-        }
     }
 
     render() {

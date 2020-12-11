@@ -12,8 +12,9 @@ import NewsList from "./NewsList";
 
 import {FiTrendingDown, FiTrendingUp} from 'react-icons/fi';
 import axios from "axios";
-import {Link, withRouter} from "react-router-dom";
+import {Link} from "react-router-dom";
 import DetailsView from "./DetailsView";
+import {connect} from "react-redux";
 
 class Home extends React.Component {
     constructor(props) {
@@ -27,6 +28,14 @@ class Home extends React.Component {
     componentDidMount() {
         this.getVirusData();
         window.addEventListener('scroll', this.listenScrollEvent)
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.show) {
+            document.body.classList.add('overflow-hidden');
+        } else {
+            document.body.classList.remove('overflow-hidden');
+        }
     }
 
 
@@ -63,7 +72,7 @@ class Home extends React.Component {
 
     render() {
         return (
-            <Container>
+            <Container className={this.props.show ? "overflow-hidden" : ""}>
                 <Row>
                     <Col className="py-5">
                         <Link className="d-flex logo" to="/">
@@ -105,10 +114,16 @@ class Home extends React.Component {
                         <img className="virus-ill" src={virus} style={{opacity: this.state.virusOpacity}} alt=""/>
                     </Col>
                 </Row>
-                <DetailsView />
+                <DetailsView/>
             </Container>
         );
     }
 }
 
-export default withRouter(Home);
+const mapStateToProps = state => {
+    return {
+        show: state.show
+    }
+};
+
+export default connect(mapStateToProps, null)(Home);

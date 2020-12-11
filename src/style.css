@@ -91,11 +91,12 @@ a:hover, a:focus {
     height: 100%;
     background-color: #ffffff;
     transition: left ease-in-out 0.3s;
+    overflow-y: auto;
+    z-index: 99;
 }
 
 .side_detail.show {
     left: 0;
-    z-index: 99;
 }
 
 
@@ -113,11 +114,15 @@ a:hover, a:focus {
     left: 0;
     transform: translateY(-50%);
     background-color: #5A33E4;
-    opacity: 1;
+    opacity: 0;
     color: #ffffff;
     padding: 1rem;
     border-top-right-radius: 50%;
     border-bottom-right-radius: 50%;
+}
+
+.side_detail.show .close {
+    opacity: 1;
 }
 
 .side_detail .close span {
@@ -173,7 +178,6 @@ a:hover, a:focus {
 }
 
 .list-group-item-action:focus, .list-group-item-action:hover {
-    cursor: default;
     background-color: white;
     box-shadow: 0 6px 26px #EFEFF7;
 }

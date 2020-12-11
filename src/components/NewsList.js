@@ -44,15 +44,13 @@ class NewsList extends React.Component {
             <div>
                 <Row className="px-md-4 my-5">
                     <Col sm={12}>
-                        <Form className="clearfix">
-                            <Form.Group className="float-left d-flex" controlId="exampleForm.ControlSelect2">
-                                <Form.Label className="text-nowrap mr-2">Sorted by:</Form.Label>
+                        <div className="clearfix">
+                            <Form.Group className="float-left d-md-flex" controlId="exampleForm.ControlSelect2">
+                                <Form.Label className="text-nowrap mr-md-2 mt-md-2">Sorted By:</Form.Label>
                                 <Form.Control as="select">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
+                                    <option>Date published</option>
+                                    <option>Relevancy to search keyword</option>
+                                    <option>Popularity of source</option>
                                 </Form.Control>
                             </Form.Group>
 
@@ -67,35 +65,35 @@ class NewsList extends React.Component {
                                     <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
-                        </Form>
+                        </div>
                     </Col>
                     <Col>
                         <ListGroup>
                             {
                                 this.state.articles.map
                                 (article =>
-                                    <ListGroup.Item className="my-2" action>
-                                        <Link to={"?source=" + article.source.name}>
+                                    <Link to={article.title.replace(/\s+/g, '-').toLowerCase()}
+                                          onClick={() => this.props.setArticle(article)}>
+                                        <ListGroup.Item className="my-2" action>
                                             <Badge variant="primary" className="mb-2">{article.source.name}</Badge>
-                                        </Link>
-                                        <Link to={article.title.replace(/\s+/g, '-').toLowerCase()}
-                                              onClick={() => this.props.setArticle(article)}>
+
                                             <h4>
                                                 {article.title}
                                             </h4>
-                                        </Link>
-                                        <div className="d-md-flex">
-                                            {
-                                                article.author === null ?
-                                                    ""
-                                                    :
-                                                    <div className="text-info mr-3">{article.author}</div>
-                                            }
-                                            <div className="text-secondary text-nowrap"><ReactTimeAgo
-                                                date={article.publishedAt} locale="en-US"/></div>
-                                        </div>
 
-                                    </ListGroup.Item>
+                                            <div className="d-md-flex">
+                                                {
+                                                    article.author === null ?
+                                                        ""
+                                                        :
+                                                        <div className="text-info mr-3">{article.author}</div>
+                                                }
+                                                <div className="text-secondary text-nowrap"><ReactTimeAgo
+                                                    date={article.publishedAt} locale="en-US"/></div>
+                                            </div>
+
+                                        </ListGroup.Item>
+                                    </Link>
                                 )
                             }
                         </ListGroup>
