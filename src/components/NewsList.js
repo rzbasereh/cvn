@@ -2,12 +2,8 @@ import React from "react";
 import axios from 'axios';
 import {
     Badge,
-    Col,
-    Container, ListGroup, Row
+    Col, ListGroup, Row
 } from "react-bootstrap";
-import Logo from '../Logo.png';
-import Card from "react-bootstrap/Card";
-import Alert from "react-bootstrap/Alert";
 import DetailsView from "./DetailsView";
 
 class NewsList extends React.Component {
@@ -61,8 +57,8 @@ class NewsList extends React.Component {
     render() {
         return (
             <div>
-                <Card>
-                    <Card.Body>
+                {/*<Card>*/}
+                {/*    <Card.Body>*/}
                         <Row>
                             <Col>
                                 <ListGroup className="px-4 my-5">
@@ -91,8 +87,8 @@ class NewsList extends React.Component {
                                 </ListGroup>
                             </Col>
                         </Row>
-                    </Card.Body>
-                </Card>
+                {/*    </Card.Body>*/}
+                {/*</Card>*/}
                 <DetailsView article={this.state.selectedItem} show={this.state.show}
                              handleClose={this.closeDetailView}/>
             </div>

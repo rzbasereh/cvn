@@ -4,53 +4,103 @@ import {
     Container, Row
 } from "react-bootstrap";
 import Logo from '../Logo.png';
+import virus from '../assets/images/svg/virus.svg';
 import Card from "react-bootstrap/Card";
 import Alert from "react-bootstrap/Alert";
 import NewsList from "./NewsList";
 
+
+import {FiTrendingDown, FiTrendingUp} from 'react-icons/fi';
+import axios from "axios";
+
 class Home extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            virusOpacity: 0,
+            virusData: {}
+        }
     }
+
+    componentDidMount() {
+        this.getVirusData();
+        window.addEventListener('scroll', this.listenScrollEvent)
+    }
+
+
+    getVirusData = () => {
+        axios({
+            method: 'get',
+            url: 'https://thevirustracker.com/free-api?global=stats',
+            headers: {}
+        }).then(res => {
+
+        }).catch(err => {
+
+        });
+    };
+
+    listenScrollEvent = e => {
+        if (window.scrollY < 200) {
+            this.setState({
+                ...this.state,
+                virusOpacity: 0
+            })
+        } else if (window.scrollY > 300) {
+            this.setState({
+                ...this.state,
+                virusOpacity: 1
+            })
+        } else {
+            this.setState({
+                ...this.state,
+                virusOpacity: (window.scrollY - 200) / 300
+            })
+        }
+    };
 
     render() {
         return (
             <Container>
                 <Row>
-                    <Col className="d-flex py-5 logo">
-                        <img src={Logo} alt=""/>
-                        <h4 className="pl-2 pt-2">Covid News</h4>
+                    <Col className="py-5">
+                        <div className="d-flex logo">
+                            <img src={Logo} alt=""/>
+                            <h4 className="pl-2 pt-2">Covid News</h4>
+                        </div>
                     </Col>
                 </Row>
                 <Row>
-                    <Col lg={8}>
+                    <Col lg={12}>
                         <Card>
-                            <Card.Header>Fatality rate by age range</Card.Header>
-                            <Card.Body>This is some text within a card body.</Card.Body>
+                            <Card.Body>
+                                <Alert variant="success">
+                                    <span>Recover</span>
+                                    <div className="clearfix">
+                                        <Alert.Heading className="float-left">20, 000</Alert.Heading>
+                                        <FiTrendingDown className="float-right text-danger"/>
+                                    </div>
+                                </Alert>
+                                <Alert variant="info">
+                                    <span>Active Confimed</span>
+                                    <div className="clearfix">
+                                        <Alert.Heading className="float-left">20, 000</Alert.Heading>
+                                        <FiTrendingUp className="float-right text-success"/>
+                                    </div>
+                                </Alert>
+                                <Alert variant="danger">
+                                    <span>Death</span>
+                                    <div className="clearfix">
+                                        <Alert.Heading className="float-left">20, 000</Alert.Heading>
+                                        <FiTrendingDown className="float-right text-danger"/>
+                                    </div>
+                                </Alert>
+                            </Card.Body>
                         </Card>
                     </Col>
-                    <Col lg={4}>
-                        <Alert variant="danger">
-                            <Alert.Heading>Death</Alert.Heading>
-                            <p>
-                                20,000
-                            </p>
-                        </Alert>
-                        <Alert variant="info">
-                            <Alert.Heading>Active Confimed</Alert.Heading>
-                            <p>
-                                20,000
-                            </p>
-                        </Alert>
-                        <Alert variant="success">
-                            <Alert.Heading>Recover</Alert.Heading>
-                            <p>
-                                20,000
-                            </p>
-                        </Alert>
-                    </Col>
-                    <Col className="py-5">
+                    <Col>
                         <NewsList/>
+                        <img className="virus-ill" src={virus} style={{opacity: this.state.virusOpacity}} alt=""/>
                     </Col>
                 </Row>
             </Container>
