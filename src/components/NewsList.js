@@ -1,5 +1,6 @@
 import React from "react";
 import axios from 'axios';
+import Skeleton from 'react-loading-skeleton';
 import {
     Badge,
     Col, Dropdown, Form, ListGroup, Row
@@ -8,6 +9,9 @@ import {setArticle} from "../store/actions/actions";
 import {connect} from "react-redux";
 import ReactTimeAgo from 'react-time-ago'
 import {Link} from "react-router-dom";
+
+const rows = 10;
+const covers = Array(rows).fill(1);
 
 class NewsList extends React.Component {
     constructor(props) {
@@ -94,12 +98,19 @@ class NewsList extends React.Component {
                     </Col>
                     <Col>
                         <ListGroup>
-                            <ListGroup.Item className="my-2" action>
-                                
-                            </ListGroup.Item>
-                            {
-                                this.state.articles.map
-                                (article =>
+                            { 
+                                this.state.loading ? 
+                                    covers.map(
+                                        () =>   <ListGroup.Item className="my-2" action>
+                                                    <Skeleton width={80} height={30} className="rounded-pill"/>
+                                                    <Skeleton height={30} className="mb-2"/>
+                                                    <Skeleton width={70} className="mr-2" />
+                                                    <Skeleton width={100}/>
+                                                </ListGroup.Item>
+                                    )
+                                : 
+                                this.state.articles.map(
+                                    article =>
                                     <Link to={article.title.replace(/\s+/g, '-').toLowerCase()}
                                           onClick={() => this.props.setArticle(article)}>
                                         <ListGroup.Item className="my-2" action>
