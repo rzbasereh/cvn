@@ -20,10 +20,6 @@ class DetailsView extends React.Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-
-    }
-
     render() {
         return (
             <div className={this.props.show ? "side_detail show" : "side_detail"}>
