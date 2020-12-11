@@ -13,7 +13,11 @@ class NewsList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: false,
             articles: [],
+            sources: "",
+            language: "",
+            sortBy: "publishedAt"
         }
     }
 
@@ -23,20 +27,41 @@ class NewsList extends React.Component {
     }
 
     getNews = () => {
-        axios.get('http://newsapi.org/v2/top-headlines', {
-            params: {
-                q: 'COVID Vaccine',
-                apiKey: "7beb18d93a494e3ca347e870561b7045"
-            }
-        })
-            .then((res) => {
-                this.setState({
-                    ...this.state,
-                    articles: res.data.articles
-                });
-            })
-            .catch(function (err) {
-            });
+        this.setState({
+            ...this.state,
+            loading: true
+        }, 
+        () => axios.get('http://newsapi.org/v2/top-headlines', {
+                    params: {
+                        q: 'COVID Vaccine',
+                        apiKey: "7beb18d93a494e3ca347e870561b7045",
+                        sources: this.state.sources,
+                        language: this.state.language,
+                        sortBy: this.state.sortBy
+                    }
+                })
+                .then((res) => {
+                    this.setState({
+                        ...this.state,
+                        articles: res.data.articles,
+                        loading: false
+                    });
+                })
+                .catch(function (err) {
+                    this.setState({
+                        ...this.state,
+                        loading: false
+                    });
+                })
+        )
+    };
+
+    handleSort = (event) => {
+        let sort = event.target.value;
+        this.setState({
+            ...this.state,
+            sortBy: sort
+        }, () => this.getNews());
     };
 
     render() {
@@ -47,10 +72,10 @@ class NewsList extends React.Component {
                         <div className="clearfix">
                             <Form.Group className="float-left d-md-flex" controlId="exampleForm.ControlSelect2">
                                 <Form.Label className="text-nowrap mr-md-2 mt-md-2">Sorted By:</Form.Label>
-                                <Form.Control as="select">
-                                    <option>Date published</option>
-                                    <option>Relevancy to search keyword</option>
-                                    <option>Popularity of source</option>
+                                <Form.Control onChange={this.handleSort} as="select">
+                                    <option value="publishedAt">Date published</option>
+                                    <option value="relevancy">Relevancy to search keyword</option>
+                                    <option value="popularity">Popularity of source</option>
                                 </Form.Control>
                             </Form.Group>
 
@@ -69,6 +94,9 @@ class NewsList extends React.Component {
                     </Col>
                     <Col>
                         <ListGroup>
+                            <ListGroup.Item className="my-2" action>
+                                
+                            </ListGroup.Item>
                             {
                                 this.state.articles.map
                                 (article =>
