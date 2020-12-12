@@ -33,7 +33,7 @@ a:hover, a:focus {
     background-color: #ffffff;
     box-shadow: 0 6px 26px #EFEFF7;
     padding: 1rem 0;
-    z-index: 100;
+    z-index: 99;
     transition: top ease-in 0.3s;
 }
 
@@ -189,6 +189,7 @@ a:hover, a:focus {
     border-top-right-radius: 50%;
     border-bottom-right-radius: 50%;
     transition: all 0.3s;
+    z-index: 1;
 }
 
 .side_detail.show .close {

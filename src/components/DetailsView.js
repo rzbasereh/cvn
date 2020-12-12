@@ -4,11 +4,13 @@ import {
     Container,
     Row
 } from "react-bootstrap";
-import {FiX} from 'react-icons/fi';
-import {closeSlide} from "../store/actions/actions";
-import {connect} from "react-redux";
 import ReactTimeAgo from "react-time-ago";
+import {connect} from "react-redux";
 import {Link} from "react-router-dom";
+
+import {FiX} from 'react-icons/fi';
+import Logo from '../Logo.png';
+import {closeSlide} from "../store/actions/actions";
 
 class DetailsView extends React.Component {
     constructor(props) {
@@ -39,8 +41,15 @@ class DetailsView extends React.Component {
                 </Link>
                 {/* Sider Content*/}
                 <Container>
+                    <Row>
+                        <Col className="py-4">
+                            <Link className="d-flex logo" to="/">
+                                <img src={Logo} width={35} height={35} alt="logo"/>
+                                <h4 className="pl-2 pt-1">Covid News</h4>
+                            </Link>
+                        </Col>
+                    </Row>
                     <div className="px-2 px-md-4">
-                        <Row><Col className="py-5"> </Col></Row>
                         <Row className="bg-secondary rounded-3 px-2 py-4 px-md-4 ">
                             <Col lg={6}>
                                 <img className="rounded-3 mb-3 mb-lg-0" src={this.props.article.urlToImage} alt=""
@@ -71,9 +80,6 @@ class DetailsView extends React.Component {
                         </Row>
                         <Row>
                             <Col>
-                                <p className="py-4 text-body">{this.props.article.content}</p>
-                                <p className="py-4 text-body">{this.props.article.content}</p>
-                                <p className="py-4 text-body">{this.props.article.content}</p>
                                 <p className="pt-4 pb-5 text-body">{this.props.article.content}</p>
                             </Col>
                         </Row>
