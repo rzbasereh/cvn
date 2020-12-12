@@ -7,7 +7,8 @@ import {
     Dropdown,
     Form, 
     ListGroup, 
-    Row
+    Row,
+    Button
 } from "react-bootstrap";
 import {setArticle} from "../store/actions/actions";
 import {connect} from "react-redux";
@@ -80,26 +81,30 @@ class NewsList extends React.Component {
                 <Row className="px-md-4 my-5">
                     <Col sm={12}>
                         <div className="clearfix">
-                            <Form.Group className="float-left d-md-flex" controlId="exampleForm.ControlSelect2">
-                                <Form.Label className="text-nowrap mr-md-2 mt-md-2">Sorted By:</Form.Label>
+                            <Form.Group className="float-left d-flex" controlId="exampleForm.ControlSelect2">
+                                <Form.Label className="text-nowrap mr-sm-2 mt-2">Sorted By:</Form.Label>
                                 <Form.Control onChange={this.handleSort} as="select">
                                     <option value="publishedAt">Date published</option>
-                                    <option value="relevancy">Relevancy to search keyword</option>
-                                    <option value="popularity">Popularity of source</option>
+                                    <option value="relevancy">Relevancy</option>
+                                    <option value="popularity">Popularity</option>
                                 </Form.Control>
                             </Form.Group>
 
-                            <Dropdown className="float-right">
-                                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                            <div className="float-right filter-sidebar">
+                                <Button variant="secondary" >
                                     Filter
-                                </Dropdown.Toggle>
+                                </Button>
 
-                                <Dropdown.Menu>
-                                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
+                                <div className="left sider p-2">
+                                    <Row>
+                                        <Col>
+                                            <h4>Filters</h4>
+                                            <hr/>
+
+                                        </Col>
+                                    </Row>
+                                </div>
+                            </div>
                         </div>
                     </Col>
                     <Col>

@@ -155,25 +155,43 @@ a:hover, a:focus {
 
 /* end list style */
 
-/* start dropdowns style */
+/* start filter-sidebar style */
 
-.dropdown-toggle::after {
-    display: none;
-}
-
-.dropdown-toggle.btn.btn-secondary {
+.filter-sidebar .btn.btn-secondary {
     background-color: #ffffff;
     color: #4B4279;
     border-radius: 10rem;
     padding: .5rem 1.5rem;
     border: none;
-    box-shadow: 0 6px 26px #EFEFF7;
+    box-shadow: 0 6px 26px #EFEFF7 !important;
+    outline: none!important;
 }
 
-.show > .btn-secondary.dropdown-toggle:focus {
+.btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle {
+    background-color: #ffffff;
+    color: #4B4279;
     box-shadow: 0 6px 26px #EFEFF7;
+    outline: none;
 }
-/* end dropdown styles */
+
+.filter-sidebar .btn-secondary:focus, .filter-sidebar .btn-secondary:hover {
+    box-shadow: none !important;
+    outline: none;
+}
+
+.left.sider {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 500px;
+    max-width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 6px 26px #EFEFF7;
+    z-index: 99;
+    display: none;
+}
+/* end filter-sidebar styles */
 
 /* start slider close style */
 
