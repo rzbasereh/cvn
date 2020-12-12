@@ -18,8 +18,6 @@ a:hover, a:focus {
     background-color: transparent;
 }
 
-
-
 /* scroll-header */
 
 .logo {
@@ -185,7 +183,7 @@ a:hover, a:focus {
     left: 0;
     transform: translateY(-50%);
     background-color: #5A33E4;
-    opacity: 0;
+    display: none;
     color: #ffffff;
     padding: 1rem;
     border-top-right-radius: 50%;
@@ -193,6 +191,7 @@ a:hover, a:focus {
 }
 
 .side_detail.show .close {
+    display: block;
     opacity: 1;
 }
 
@@ -235,6 +234,25 @@ a:hover, a:focus {
 
 .side_detail .close:hover {
     cursor: pointer;
+}
+
+@media(max-width: 768px) {
+    .side_detail .close {
+        position: fixed;
+        top: calc(100% - 3rem);
+        left: 1rem;
+        transform: translateY(-50%);
+        background-color: #5A33E4;
+        display: none;
+        color: #ffffff;
+        padding: 1rem;
+        border-radius: 50%;
+        z-index: 1;
+    }
+    
+    .side_detail .close span {
+        display: none;
+    }
 }
 /* end slider close style  */
 

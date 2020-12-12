@@ -13,18 +13,29 @@ import {Link} from "react-router-dom";
 class DetailsView extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            closeMode: 0
+        }
     }
+
+    componentDidMount() {
+        window.addEventListener('scroll', this.listenScrollEvent)
+    }
+
+    listenScrollEvent = e => {
+        if(window.scrollY > window.innerHeight / 2) {
+            console.log("df");
+        }
+    };
 
     render() {
         return (
             <div className={this.props.show ? "side_detail show" : "side_detail"}>
                 {/* Sider Close */}
-                <Link to={"/"}>
-                    <div className="close" onClick={this.props.handleClose}>
-                        <span/>
-                        <FiX/>
-                        <span/>
-                    </div>
+                <Link to={"/"} className="close" onClick={this.props.handleClose}>
+                    <span/>
+                    <FiX/>
+                    <span/>
                 </Link>
                 {/* Sider Content*/}
                 <Container>
@@ -61,6 +72,9 @@ class DetailsView extends React.Component {
                         <Row>
                             <Col>
                                 <p className="py-4 text-body">{this.props.article.content}</p>
+                                <p className="py-4 text-body">{this.props.article.content}</p>
+                                <p className="py-4 text-body">{this.props.article.content}</p>
+                                <p className="pt-4 pb-5 text-body">{this.props.article.content}</p>
                             </Col>
                         </Row>
                     </div>
