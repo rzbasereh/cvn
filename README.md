@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+# Covid News
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+this is a simple website that show latest news about COVID-19. this site has some features such as sorting, filtering the news.
 
-## Available Scripts
+## Libraries
 
-In the project directory, you can run:
+The list of libraries and packages use in this project comming below:
+* axios: v0.21.0
+* bootstrap: v4.5.3
+* react-time-ago: v6.2.1
+* javascript-time-ago: latest version
+* react-icons: v4.1.0
+* redux: v4.0.5
+* react-redux: v7.2.2
 
-### `npm start`
+## Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+this Project is base on ReactJs  and containing main three files *Home.js*, *NewsList.Js* & *DetailsView.Js*.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+That *Home.js* file is main page of the site and the other files are included in this files and just used to have a clear code.
 
-### `npm test`
+After opening website and rendering *App.js* file the *Home.js* component loading and intime the *NewsList* that included in *Home.js* file rendering and get latest news with *COVID Vaccine* keyword and by default soring them by publised time and date. The *DetailsView.js* component is rendering when user clicked on each news item in the list.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Explain Main Files
 
-### `npm run build`
+### Home.js
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+this.state = {
+    virusOpacity: 0,
+    fixHeader: false,
+}
+```
+There are three state that declare in *Home* class constructor. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**virusOpacity** used to set the opacity value of the virus illustrator that appear after scrolling to the bottom and vanish after scroll top.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**fixHeader** used to toggle the visibility of the secondary header that apear in scrolling such as *virusOpacity* action.
 
-### `npm run eject`
+```
+componentDidMount() {
+    this.getVirusData();
+    window.addEventListener('scroll', this.listenScrollEvent)
+}
+```
+this method call after rendering and call *getVirusData* function and use *listenScrollEvent* as  scroll listener.
+```
+componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.show) {
+        document.body.classList.add('overflow-hidden');
+    } else {
+        document.body.classList.remove('overflow-hidden');
+    }
+}
+``` 
+This method call after any change in state and props and check the dispaly state of *DetailsView* and if this class rendering and show is true this part add *overflow-hidden* class to body tag and prevent the background scrolling when *DetailsView* class is rendering and if *show* is false remove this class and body tag can has scroll bar.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+`show props in declare in website store.`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### NewsList.js
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### DetailsView.js

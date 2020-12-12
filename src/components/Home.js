@@ -22,7 +22,6 @@ class Home extends React.Component {
         this.state = {
             virusOpacity: 0,
             fixHeader: false,
-            virusData: {}
         }
     }
 
@@ -108,7 +107,7 @@ class Home extends React.Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col lg={12}>
+                        {/* <Col lg={12}>
                             <Card>
                                 <Card.Body>
                                     <Alert variant="success">
@@ -134,7 +133,7 @@ class Home extends React.Component {
                                     </Alert>
                                 </Card.Body>
                             </Card>
-                        </Col>
+                        </Col> */}
                         <Col>
                             <NewsList/>
                             <img className="virus-ill" src={virus} style={{opacity: this.state.virusOpacity}} alt=""/>
