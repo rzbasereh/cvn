@@ -4,13 +4,13 @@ import Skeleton from 'react-loading-skeleton';
 import {
     Badge,
     Col,
-    Dropdown,
     Form, 
     ListGroup, 
     Row,
     Button
 } from "react-bootstrap";
 import {setArticle} from "../store/actions/actions";
+import {FiX} from 'react-icons/fi';
 import {connect} from "react-redux";
 import ReactTimeAgo from 'react-time-ago'
 import {Link} from "react-router-dom";
@@ -24,6 +24,7 @@ class NewsList extends React.Component {
         this.state = {
             loading: false,
             articles: [],
+            filter_toggle: false,
             sources: "",
             language: "",
             sortBy: "publishedAt"
@@ -75,6 +76,21 @@ class NewsList extends React.Component {
         }, () => this.getNews());
     };
 
+    // Handle Filter Toggle
+    handleFilterToggle = () => {
+        if (this.state.filter_toggle) {
+            this.setState({
+                ...this.state,
+                filter_toggle: false
+            }, () => document.body.classList.remove('overflow-hidden'));
+        } else {
+            this.setState({
+                ...this.state,
+                filter_toggle: true
+            }, () => document.body.classList.add('overflow-hidden'));
+        }
+    }
+
     render() {
         return (
             <div>
@@ -91,19 +107,22 @@ class NewsList extends React.Component {
                             </Form.Group>
 
                             <div className="float-right filter-sidebar">
-                                <Button variant="secondary" >
+                                <Button variant="secondary" onClick={this.handleFilterToggle}>
                                     Filter
                                 </Button>
 
-                                <div className="left sider p-2">
+                                <div className={this.state.filter_toggle ? "right sider p-2 show" : "right sider p-2"}>
                                     <Row>
                                         <Col>
-                                            <h4>Filters</h4>
-                                            <hr/>
-
+                                            <h3 className="p-2">Filters</h3>
+                                            <div className="close" onClick={this.handleFilterToggle} >
+                                                <FiX/>
+                                            </div>
                                         </Col>
                                     </Row>
                                 </div>
+                                <div className={this.state.filter_toggle ? "show sider-backdrop" : "sider-backdrop"} 
+                                    onClick={this.handleFilterToggle}/>
                             </div>
                         </div>
                     </Col>

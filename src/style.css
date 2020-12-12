@@ -30,8 +30,8 @@ a:hover, a:focus {
     left: 0;
     width: 100%;
     height: 80px;
+    border-bottom: 1px solid #F2F2F2;
     background-color: #ffffff;
-    box-shadow: 0 6px 26px #EFEFF7;
     padding: 1rem 0;
     z-index: 99;
     transition: top ease-in 0.3s;
@@ -179,18 +179,49 @@ a:hover, a:focus {
     outline: none;
 }
 
-.left.sider {
+.right.sider {
     position: fixed;
     top: 0;
-    left: 0;
+    right: -410px;
     height: 100%;
-    width: 500px;
+    width: 400px;
     max-width: 100%;
     background-color: #ffffff;
     box-shadow: 0 6px 26px #EFEFF7;
-    z-index: 99;
-    display: none;
+    z-index: 100;
+    transition: all  0.3s;
 }
+
+.right.sider.show {
+    right: 0;
+}
+
+.right.sider .close {
+    position: absolute;
+    top: .25rem;
+    right: 1rem;
+    cursor: pointer;
+    background-color: #5A33E4;
+    color: #ffffff;
+    opacity: 1;
+    padding: 0.75rem;
+    border-top-left-radius: 5.5rem;
+    border-top-right-radius: 3.5rem;
+    border-bottom-left-radius: 3rem;
+    border-bottom-right-radius: 3rem;
+}
+
+.sider-backdrop.show {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #4B4279;
+    opacity: 0.1;
+    z-index: 99;
+}
+
 /* end filter-sidebar styles */
 
 /* start slider close style */

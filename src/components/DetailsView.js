@@ -19,17 +19,7 @@ class DetailsView extends React.Component {
             closeMode: 0
         }
     }
-
-    componentDidMount() {
-        window.addEventListener('scroll', this.listenScrollEvent)
-    }
-
-    listenScrollEvent = e => {
-        if(window.scrollY > window.innerHeight / 2) {
-            console.log("df");
-        }
-    };
-
+    
     render() {
         return (
             <div className={this.props.show ? "side_detail show" : "side_detail"}>
