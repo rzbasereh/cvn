@@ -114,11 +114,13 @@ class NewsList extends React.Component {
                                 <div className={this.state.filter_toggle ? "right sider p-2 show" : "right sider p-2"}>
                                     <Row>
                                         <Col>
-                                            <h3 className="p-2">Filters</h3>
+                                            <h4 className="p-2 sider-title">Filters</h4>
                                             <div className="close" onClick={this.handleFilterToggle} >
                                                 <FiX/>
                                             </div>
                                         </Col>
+
+                                        <Button variant='primary' className="apply-filter">Apply Filters</Button>
                                     </Row>
                                 </div>
                                 <div className={this.state.filter_toggle ? "show sider-backdrop" : "sider-backdrop"} 
@@ -141,7 +143,7 @@ class NewsList extends React.Component {
                                 : 
                                 this.state.articles.map(
                                     article =>
-                                    <Link to={article.title.replace(/\s+/g, '-').toLowerCase()}
+                                    <Link to={encodeURIComponent(article.title).replace(/\s+/g, '-').toLowerCase()}
                                           onClick={() => this.props.setArticle(article)}>
                                         <ListGroup.Item className="my-2" action>
                                             <Badge variant="primary" className="mb-2">{article.source.name}</Badge>

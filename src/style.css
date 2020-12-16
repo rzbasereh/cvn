@@ -24,6 +24,10 @@ a:hover, a:focus {
     z-index: 100;
 }
 
+.logo h4 {
+    font-family: 'Poppins Bold';
+}
+
 .scroll-header {
     position: fixed;
     top: -100px;
@@ -104,6 +108,30 @@ a:hover, a:focus {
 }
 
 /* end alert style */
+
+/* start button style */
+
+.btn.btn-primary {
+    background-color: #5A33E4;
+    box-shadow: 0 6px 26px #EFEFF7;
+    border: none;
+    outline: none;
+    border-radius: 5rem;
+    padding: 0.5rem;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show > .btn-primary.dropdown-toggle { 
+    background-color: #5A33E4;
+    box-shadow: 0 0px 7px #5A33E4a0;
+    outline: none;
+}
+
+.btn-primary.focus, .btn-primary:focus {
+    box-shadow: 0 0px 7px #5A33E4a0 !important;
+    outline: none !important;
+}
+
+/* end button style */
 
 /* start list style */
 
@@ -186,8 +214,9 @@ a:hover, a:focus {
     height: 100%;
     width: 400px;
     max-width: 100%;
+    padding-bottom: 4rem !important;
     border-top-left-radius: 1rem;
-    border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 1rem;
     background-color: #ffffff;
     box-shadow: 0 6px 26px #EFEFF7;
     transition: all  0.3s;
@@ -197,12 +226,16 @@ a:hover, a:focus {
 @media(max-width: 400px) {
     .right.sider {
         border-top-left-radius: 0;
-        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
     }
 }
 
 .right.sider.show {
     right: 0;
+}
+
+.sider .sider-title {
+    font-family: 'Poppins SemiBold';
 }
 
 .right.sider .close {
@@ -213,7 +246,7 @@ a:hover, a:focus {
     background-color: #5A33E4;
     color: #ffffff;
     opacity: 1;
-    padding: 0.75rem;
+    padding: 0.5rem;
     border-top-left-radius: 5.5rem;
     border-top-right-radius: 3.5rem;
     border-bottom-left-radius: 3rem;
@@ -229,6 +262,24 @@ a:hover, a:focus {
     background-color: #4B4279;
     opacity: 0.1;
     z-index: 99;
+}
+
+.sider.right .apply-filter {
+    position: fixed;
+    bottom: -3rem;
+    right: 15px;
+    width: 370px;
+    transition: bottom 0.3s;
+}
+
+@media(max-width: 400px) {
+    .sider.right .apply-filter {
+        width: calc(100% - 30px);
+    }
+}
+
+.sider.right.show .apply-filter {
+    bottom: 1rem;
 }
 
 /* end filter-sidebar styles */
