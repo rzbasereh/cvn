@@ -7,26 +7,51 @@ import {
     Form, 
     ListGroup, 
     Row,
-    Button
+    Button,
+    InputGroup,
+    FormControl
 } from "react-bootstrap";
 import {setArticle} from "../store/actions/actions";
-import {FiX} from 'react-icons/fi';
+import {FiX, FiSearch, FiInbox} from 'react-icons/fi';
 import {connect} from "react-redux";
 import ReactTimeAgo from 'react-time-ago'
 import {Link} from "react-router-dom";
 import { SphereSpinner } from "react-spinners-kit";
 
 import us from '../assets/images/svg/flags/us.svg';
+import ru from '../assets/images/svg/flags/ru.svg';
 
 const langList = [
     {
         key: 'us',
         name: 'United States',
         img: us
-    }
+    }, 
+    {
+        key: 'ru',
+        name: '',
+        img: ru
+    },
+    {
+        key: 'ru',
+        name: '',
+        img: ru
+    },
+    {
+        key: 'ru',
+        name: '',
+        img: ru
+    },
+    {
+        key: 'ru',
+        name: '',
+        img: ru
+    },
 ];
-const pageSize = 3;
+const pageSize = 25;
 const covers = Array(pageSize).fill(1);
+// const apiKey = "7beb18d93a494e3ca347e870561b7045";
+const apiKey = "b0c096bdabc740a18c9dd3dbc1675e39";
 
 
 class NewsList extends React.Component {
@@ -40,14 +65,20 @@ class NewsList extends React.Component {
                 loadingmore: false
             },
             sourcesList: {
-                loading: false,
-                data: []
+                loading: true,
+                data: [],
+                filtered: []
+            },
+            filter: {
+                toggle: false,
+                sources: [],
+                languages: [],
+                changed: false
             },
 
             page: 1,
-            filter_toggle: false,
-            sources: "",
-            language: "",
+            sources: [],
+            languages: [],
             sortBy: "publishedAt",
         }
     }
@@ -65,28 +96,37 @@ class NewsList extends React.Component {
                 ...this.state.articles,
                 loading: !loadingmore
             }   
-        }, 
-        () => axios.get('https://newsapi.org/v2/everything', {
+        }, () => {
+            let sources = [];
+            this.state.sources.map(source => {
+                sources.push(source.toLowerCase().replace(" ", "-"));
+            });
+            axios.get('https://newsapi.org/v2/everything', {
                     params: {
                         q: 'COVID Vaccine',
-                        apiKey: "7beb18d93a494e3ca347e870561b7045",
+                        apiKey: apiKey,
                         pageSize: pageSize,
                         page: this.state.page,
-                        sources: this.state.sources,
-                        language: this.state.language,
+                        sources: sources.join(','),
+                        language: this.state.languages.join(','),
                         sortBy: this.state.sortBy
                     }
                 })
                 .then((res) => {
+                    let data = res.data.articles;
+                    if (loadingmore) {
+                        data = Array.from(new Set([...this.state.articles.data, ...data]));
+                    }
                     this.setState({
                         ...this.state,
                         articles: {
-                            data: [...this.state.articles.data, ...res.data.articles],
+                            data: data,
                             total: res.data.totalResults,
                             loading: false,
                             loadingmore: false
                         }
                     });
+
                 })
                 .catch(function (err) {
                     // this.setState({
@@ -97,7 +137,8 @@ class NewsList extends React.Component {
                     //         loadingmore: false
                     //     }
                     // });
-                })
+                });
+            }
         )
     };
 
@@ -111,7 +152,7 @@ class NewsList extends React.Component {
         }, 
         () => axios.get('https://newsapi.org/v2/sources', {
                     params: {
-                        apiKey: "7beb18d93a494e3ca347e870561b7045",
+                        apiKey: apiKey,
                     }
                 })
                 .then((res) => {
@@ -119,6 +160,7 @@ class NewsList extends React.Component {
                         ...this.state,
                         sourcesList: {
                             data: res.data.sources,
+                            filtered: res.data.sources,
                             loading: false
                         }
                     });
@@ -160,20 +202,168 @@ class NewsList extends React.Component {
 
     // Handle Filter Toggle
     handleFilterToggle = () => {
-        if (this.state.filter_toggle) {
+        if (this.state.filter.toggle) {
             this.setState({
                 ...this.state,
-                filter_toggle: false
+                filter:{
+                    ...this.state.filter,
+                    toggle: false
+                }
             }, () => document.body.classList.remove('overflow-hidden'));
         } else {
+            let isChanged = false;
+            if (this.state.filter.sources !== this.state.sources) {
+                isChanged = true;
+            }
             this.setState({
                 ...this.state,
-                filter_toggle: true
+                filter:{
+                    ...this.state.filter,
+                    changed: isChanged,
+                    toggle: true
+                }
             }, () => document.body.classList.add('overflow-hidden'));
         }
     }
 
+    handleSourceSelect = (source) => {
+        let sources = Array.from(new Set([...this.state.filter.sources, source]));
+        this.setState({
+            ...this.state,
+            filter: {
+                ...this.state.filter,
+                sources: sources
+            }
+        });
+    }
+
+    handleSourceSearch = (event) => {
+        let value = event.target.value.toString().toLowerCase();
+        let result = this.state.sourcesList.data.filter(source => source.name.toLowerCase().includes(value));
+        this.setState({
+            ...this.state,
+            sourcesList: {
+                ...this.state.sourcesList,
+                filtered: result
+            }
+        });
+    }
+
+    handleSourceDelete = (source) => {
+        let result = this.state.filter.sources.filter(item => item !== source);
+        this.setState({
+            ...this.state,
+            filter: {
+                ...this.state.filter,
+                sources: result
+            }
+        });
+    };
+
+
+    handleApplyFilter = () => {
+        this.setState({
+            ...this.state,
+            sources: this.state.filter.sources,
+            filter: {
+                ...this.state.filter,
+            }
+        }, () => {
+            this.handleFilterToggle();
+            this.getNews(false);
+        });
+    };
+
     render() {
+
+        const filterContainer = <div className={this.state.filter.toggle ? "right sider show" : "right sider"}>
+            <div className="sider-header">
+                <Row>
+                    <Col xs={12}>
+                        <h4 className="sider-title">Filters</h4>
+                        <div className="close" onClick={this.handleFilterToggle} >
+                            <FiX/>
+                        </div>
+                    </Col>
+                </Row>
+            </div>
+            <div className="sider-body scroll">
+                <Row>
+                    <Col xs={12}>
+                        <h6 className="pb-2">languages</h6>
+                        <ListGroup horizontal>
+                            {
+                                langList.map(item =>
+                                    <ListGroup.Item action>
+                                        <img alt={item.key} src={item.img} width="30"/>
+                                    </ListGroup.Item>
+                                )
+                            }
+                        </ListGroup>
+                    </Col>
+                    <Col xs={12}>
+                        <h6 className="pb-2 pt-4">sources</h6>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Prepend>
+                                <InputGroup.Text id="search-source">
+                                    <FiSearch/>
+                                    {/* <FiLoader/> */}
+                                </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <FormControl
+                                placeholder="Search"
+                                aria-label="Search"
+                                aria-describedby="search-source"
+                                onChange={this.handleSourceSearch}
+                                />
+                        </InputGroup>
+                        <ListGroup className="source-list">
+                            {
+                                this.state.sourcesList.loading ?
+                                    Array(128).fill(1).map(() =>
+                                        <ListGroup.Item action>
+                                            <Skeleton/>
+                                        </ListGroup.Item>
+                                    )
+                                :
+                                    this.state.sourcesList.filtered.length ?
+                                        this.state.sourcesList.filtered.map(source => {
+                                            let isActive = false;
+                                            if (this.state.filter.sources.find(item => item === source.name)) {
+                                                isActive = true;
+                                            }
+                                            return (
+                                                <ListGroup.Item action active={isActive} onClick={() => this.handleSourceSelect(source.name)}>
+                                                    {source.name}
+                                                </ListGroup.Item>
+                                            );
+                                        })
+                                    :
+                                    <ListGroup.Item className="text-center">
+                                        <FiInbox/>
+                                        <div>Not found!</div>
+                                    </ListGroup.Item>
+                            }                            
+                        </ListGroup>
+                        {
+                            this.state.filter.sources.map(source =>
+                                <div className="tag-item">
+                                    <span>{source}</span>
+                                    <FiX className="close" onClick={() => this.handleSourceDelete(source)}/>
+                                </div>
+                            )
+                        }   
+                    </Col>
+                    {
+                        this.state.filter.changed ? 
+                            <Button variant='primary' className="apply-filter" onClick={this.handleApplyFilter}>Apply Filters</Button>   
+                        :
+                            ""
+                    }
+                </Row>
+            </div>
+        </div>;
+
         return (
             <div>
                 <Row className="px-md-4 my-5">
@@ -193,49 +383,15 @@ class NewsList extends React.Component {
                                     Filter
                                 </Button>
 
-                                <div className={this.state.filter_toggle ? "right sider p-3 show" : "right sider p-2"}>
-                                    <Row>
-                                        <Col xs={12}>
-                                            <h4 className="sider-title">Filters</h4>
-                                            <div className="close" onClick={this.handleFilterToggle} >
-                                                <FiX/>
-                                            </div>
-                                        </Col>
-                                        <Col xs={12}>
-                                            <h6 className="pb-2 pt-4">languages</h6>
-                                            <ListGroup horizontal>
-                                                {
-                                                    langList.map(item => {
-                                                        <ListGroup.Item>
-                                                            <img alt={item.key} src={item.img}/>
-                                                        </ListGroup.Item>
-                                                    })
-                                                }
-                                            </ListGroup>
-                                        </Col>
-                                        <Col xs={12}>
-                                            <h6 className="pb-2 pt-4">sources</h6>
-                                            {this.state.sourcesList.data.concat}
-                                            <ListGroup horizontal>
-                                                {
-                                                    this.state.sourcesList.data.map(source => {
-                                                        <ListGroup.Item>
-                                                            {source.name}
-                                                        </ListGroup.Item>
-                                                    })
-                                                }
-                                            </ListGroup>
-                                        </Col>
-                                        <Button variant='primary' className="apply-filter">Apply Filters</Button>
-                                    </Row>
-                                </div>
-                                <div className={this.state.filter_toggle ? "show sider-backdrop" : "sider-backdrop"} 
+                                {filterContainer}
+
+                                <div className={this.state.filter.toggle ? "show sider-backdrop" : "sider-backdrop"} 
                                     onClick={this.handleFilterToggle}/>
                             </div>
                         </div>
                     </Col>
                     <Col>
-                        <ListGroup>
+                        <ListGroup className="news-list">
                             {
                                 this.state.articles.loading ? // Preview Loading until syncing news 
                                     covers.map(
@@ -265,8 +421,9 @@ class NewsList extends React.Component {
                                                         :
                                                         <div className="text-info mr-3">{article.author}</div>
                                                 }
-                                                <div className="text-secondary text-nowrap"><ReactTimeAgo
-                                                    date={article.publishedAt} locale="en-US"/></div>
+                                                <div className="text-secondary text-nowrap">
+                                                    <ReactTimeAgo date={article.publishedAt} locale="en-US"/>
+                                                </div>
                                             </div>
 
                                         </ListGroup.Item>

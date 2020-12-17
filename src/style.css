@@ -201,10 +201,11 @@ button:focus {
     border-radius: 0.75rem !important;
 }
 
-.list-group-horizontal .list-group-item.active {
+.list-group-item.active {
     border: 2px solid #f65f9c;
     background-color: #ffffff;
     color: #4B4279;
+    border-radius: 10px;
 }
 
 /* end list style */
@@ -264,7 +265,7 @@ button:focus {
     font-family: 'Poppins SemiBold';
 }
 
-.right.sider .close {
+.right.sider .sider-header .close {
     position: absolute;
     top: -.25rem;
     right: 1rem;
@@ -287,6 +288,33 @@ button:focus {
     z-index: 99;
 }
 
+.sider .sider-header {
+    padding: 1rem;
+}
+
+.sider .sider-body {
+    padding: 1rem;
+}
+
+.sider .sider-body.scroll {
+    overflow-y: auto;
+    height: calc(100% - 4rem);
+}
+
+.sider .sider-body .source-list {
+    overflow-y: auto;
+    height: 18rem;
+    padding: 0 0.5rem;
+}
+
+.sider .sider-body .source-list .list-group-item-action {
+    margin-top: 0.25rem;
+}
+
+.sider .sider-body .source-list .list-group-item-action:not(:last-child)::after {
+    bottom: -0.25rem;
+}
+
 .sider.right .apply-filter {
     position: fixed;
     bottom: -3rem;
@@ -306,6 +334,53 @@ button:focus {
 }
 
 /* end filter-sidebar styles */
+
+/* start tag style */
+
+.tag-item {
+    display: inline-block;
+    border: 2px solid #f65f9c;
+    border-radius: 5rem;
+    padding: 0 0.5rem;
+    margin-right: 0.25rem;
+    margin-top: 0.5rem;
+    font-family: 'Poppins Regular';
+    font-size: 0.95em;
+}
+
+.tag-item .close {
+    color: #f65f9c;
+    cursor: pointer;
+    opacity: 1;
+}
+
+/* end tag style */
+
+/* start input style */
+.form-control {
+ outline: none;
+}
+
+.form-control:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
+.form-control::placeholder {
+    color: #6d7278;
+}
+
+.input-group > .custom-select:not(:first-child), .input-group > .form-control:not(:first-child) {
+    border-left: none;
+}
+
+.input-group-text {
+    background-color: #ffffff;
+    border-right: none;
+}
+
+/* end input style */
 
 /* start slider close style */
 
