@@ -17,42 +17,14 @@ import {connect} from "react-redux";
 import ReactTimeAgo from 'react-time-ago'
 import {Link} from "react-router-dom";
 import { SphereSpinner } from "react-spinners-kit";
+import ReactCountryFlag from "react-country-flag";
+import {languageMenu} from "../lang_menu";
 
-import us from '../assets/images/svg/flags/us.svg';
-import ru from '../assets/images/svg/flags/ru.svg';
-
-const langList = [
-    {
-        key: 'us',
-        name: 'United States',
-        img: us
-    }, 
-    {
-        key: 'ru',
-        name: '',
-        img: ru
-    },
-    {
-        key: 'ru',
-        name: '',
-        img: ru
-    },
-    {
-        key: 'ru',
-        name: '',
-        img: ru
-    },
-    {
-        key: 'ru',
-        name: '',
-        img: ru
-    },
-];
 const pageSize = 25;
 const covers = Array(pageSize).fill(1);
 // const apiKey = "7beb18d93a494e3ca347e870561b7045";
-const apiKey = "b0c096bdabc740a18c9dd3dbc1675e39";
-
+// const apiKey = "b0c096bdabc740a18c9dd3dbc1675e39";
+const apiKey = "e5a1a1aab4a04c0084fb9f9e6c19876f";
 
 class NewsList extends React.Component {
     constructor(props) {
@@ -67,7 +39,11 @@ class NewsList extends React.Component {
             sourcesList: {
                 loading: true,
                 data: [],
-                filtered: []
+                founded: []
+            },
+            langsList: {
+                loading: true,
+                data: [],
             },
             filter: {
                 toggle: false,
@@ -99,7 +75,8 @@ class NewsList extends React.Component {
         }, () => {
             let sources = [];
             this.state.sources.map(source => {
-                sources.push(source.toLowerCase().replace(" ", "-"));
+                let instance = source.toLowerCase().replace(/ /g, "-").replace(/[^\w-]/g, "");
+                sources.push(instance);
             });
             axios.get('https://newsapi.org/v2/everything', {
                     params: {
@@ -156,26 +133,49 @@ class NewsList extends React.Component {
                     }
                 })
                 .then((res) => {
+                    let langs = [];
+                    res.data.sources.map(item => {
+                        langs.push(item.language);
+                    });
+                    langs = Array.from(new Set(langs));
+                    console.log(langs);
                     this.setState({
                         ...this.state,
                         sourcesList: {
                             data: res.data.sources,
-                            filtered: res.data.sources,
+                            founded: res.data.sources,
                             loading: false
+                        },
+                        langsList: {
+                            loading: false,
+                            data: langs
                         }
                     });
                 })
                 .catch(function (err) {
-                    this.setState({
-                        ...this.state,
-                        sourcesList: {
-                            ...this.state.sourcesList,
-                            loading: false
-                        }
-                    });
+                    // this.setState({
+                    //     ...this.state,
+                    //     sourcesList: {
+                    //         ...this.state.sourcesList,
+                    //         loading: false
+                    //     }
+                    // });
                 })
         )  
     };
+
+    filterHasChange = () => {
+        let isChanged = false;
+        console.log(this.state.filter.sources);
+        console.log(this.state.sources);
+        console.log(this.state.filter.languages);
+        console.log(this.state.languages);
+        if (JSON.stringify(this.state.filter.sources) !== JSON.stringify(this.state.sources) ||
+            JSON.stringify(this.state.filter.languages) !== JSON.stringify(this.state.languages)) {
+            isChanged = true;
+        }
+        return isChanged;
+    }
 
     handleLoadMore = () => {
         if(this.state.articles.total > this.state.articles.data.length) {
@@ -211,19 +211,34 @@ class NewsList extends React.Component {
                 }
             }, () => document.body.classList.remove('overflow-hidden'));
         } else {
-            let isChanged = false;
-            if (this.state.filter.sources !== this.state.sources) {
-                isChanged = true;
-            }
             this.setState({
                 ...this.state,
                 filter:{
                     ...this.state.filter,
-                    changed: isChanged,
+                    changed: this.filterHasChange(),
                     toggle: true
                 }
             }, () => document.body.classList.add('overflow-hidden'));
         }
+    }
+
+    handleLanguageSelect = (lang) => {
+        let langs = Array.from(new Set([...this.state.filter.languages, lang]));
+        this.setState({
+            ...this.state,
+            filter: {
+                ...this.state.filter,
+                languages: langs,
+            }
+        }, () => {
+            this.setState({
+                ...this.state,
+                filter: {
+                    ...this.state.filter,
+                    changed: this.filterHasChange()
+                }
+            })
+        });
     }
 
     handleSourceSelect = (source) => {
@@ -232,8 +247,16 @@ class NewsList extends React.Component {
             ...this.state,
             filter: {
                 ...this.state.filter,
-                sources: sources
+                sources: sources,
             }
+        }, () => {
+            this.setState({
+                ...this.state,
+                filter: {
+                    ...this.state.filter,
+                    changed: this.filterHasChange()
+                }
+            })
         });
     }
 
@@ -244,19 +267,34 @@ class NewsList extends React.Component {
             ...this.state,
             sourcesList: {
                 ...this.state.sourcesList,
-                filtered: result
+                founded: result
             }
         });
     }
 
-    handleSourceDelete = (source) => {
-        let result = this.state.filter.sources.filter(item => item !== source);
+    handleDelete = (item, mode) => {
+        let languages = this.state.filter.languages;
+        let sources = this.state.filter.sources;
+        if (mode === "source") {
+            sources = this.state.filter.sources.filter(source => item !== source);
+        } else {
+            languages = this.state.filter.languages.filter(lang => item !== lang);
+        }
         this.setState({
             ...this.state,
             filter: {
                 ...this.state.filter,
-                sources: result
+                sources: sources,
+                languages: languages,
             }
+        }, () => {
+            this.setState({
+                ...this.state,
+                filter: {
+                    ...this.state.filter,
+                    changed: this.filterHasChange()
+                }
+            })
         });
     };
 
@@ -265,14 +303,17 @@ class NewsList extends React.Component {
         this.setState({
             ...this.state,
             sources: this.state.filter.sources,
+            languages: this.state.filter.languages,
             filter: {
                 ...this.state.filter,
+                toggle: false
             }
-        }, () => {
-            this.handleFilterToggle();
-            this.getNews(false);
-        });
+        },() => this.getNews(false));
     };
+
+    handleCancelFilter = () => {
+
+    }
 
     render() {
 
@@ -291,15 +332,47 @@ class NewsList extends React.Component {
                 <Row>
                     <Col xs={12}>
                         <h6 className="pb-2">languages</h6>
-                        <ListGroup horizontal>
+                        <ListGroup horizontal className="langs-list">
                             {
-                                langList.map(item =>
-                                    <ListGroup.Item action>
-                                        <img alt={item.key} src={item.img} width="30"/>
-                                    </ListGroup.Item>
-                                )
+                                this.state.langsList.loading ? 
+                                    Array(14).fill(1).map(() => 
+                                        <ListGroup.Item action className="text-center">
+                                            <Skeleton width={45} height={30}/>
+                                            <Skeleton width={70}/>
+                                        </ListGroup.Item>
+                                    )
+                                :
+                                    this.state.langsList.data.map(lang => {
+                                        let isActive = false;
+                                        if (this.state.filter.languages.find(item => item === lang)) {
+                                            isActive = true;
+                                        }
+                                        let itemInfo = languageMenu.find(value => value.key === lang);
+                                        return (
+                                            <ListGroup.Item className="text-center" action active={isActive} 
+                                                onClick={() => this.handleLanguageSelect(lang)}>
+                                                <ReactCountryFlag 
+                                                    countryCode={itemInfo.code} 
+                                                    svg
+                                                    style={{
+                                                        width: '2em',
+                                                        height: '2em',
+                                                    }}
+                                                    aria-label={lang} />
+                                                <span class="langs-title">{itemInfo.title}</span>
+                                            </ListGroup.Item>
+                                        );
+                                    })
                             }
                         </ListGroup>
+                        {
+                            this.state.filter.languages.map(lang =>
+                                <div className="tag-item">
+                                    <span>{languageMenu.find(item => item.key === lang).title}</span>
+                                    <FiX className="close" onClick={() => this.handleDelete(lang, "lang")}/>
+                                </div>
+                            )
+                        }
                     </Col>
                     <Col xs={12}>
                         <h6 className="pb-2 pt-4">sources</h6>
@@ -326,8 +399,8 @@ class NewsList extends React.Component {
                                         </ListGroup.Item>
                                     )
                                 :
-                                    this.state.sourcesList.filtered.length ?
-                                        this.state.sourcesList.filtered.map(source => {
+                                    this.state.sourcesList.founded.length ?
+                                        this.state.sourcesList.founded.map(source => {
                                             let isActive = false;
                                             if (this.state.filter.sources.find(item => item === source.name)) {
                                                 isActive = true;
@@ -349,17 +422,22 @@ class NewsList extends React.Component {
                             this.state.filter.sources.map(source =>
                                 <div className="tag-item">
                                     <span>{source}</span>
-                                    <FiX className="close" onClick={() => this.handleSourceDelete(source)}/>
+                                    <FiX className="close" onClick={() => this.handleDelete(source, "source")}/>
                                 </div>
                             )
                         }   
                     </Col>
-                    {
-                        this.state.filter.changed ? 
-                            <Button variant='primary' className="apply-filter" onClick={this.handleApplyFilter}>Apply Filters</Button>   
-                        :
-                            ""
-                    }
+                    <Button variant='primary' onClick={this.handleApplyFilter}
+                        className={this.state.filter.changed && this.state.filter.toggle  ? "apply-filter show" : "apply-filter"}>
+                        Apply Filters
+                    </Button> 
+                    <Button variant='secondary' onClick={this.handleCancelFilter}
+                        className={
+                            this.state.filter.changed && this.state.filter.toggle && this.state.languages.length && this.state.sources.length ?
+                                "cancel-filter" : "cancel-filter show"
+                            }>
+                        Cancel Filters
+                    </Button> 
                 </Row>
             </div>
         </div>;
