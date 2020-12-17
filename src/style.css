@@ -111,6 +111,10 @@ a:hover, a:focus {
 
 /* start button style */
 
+button:focus {
+    outline: none;
+}
+
 .btn.btn-primary {
     background-color: #5A33E4;
     box-shadow: 0 6px 26px #EFEFF7;
@@ -181,6 +185,28 @@ a:hover, a:focus {
     background-color: #F2F2F2;
 }
 
+.list-group-horizontal {
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none; 
+}
+
+.list-group-horizontal::-webkit-scrollbar {
+    display: none;
+}
+
+.list-group-horizontal .list-group-item {
+    box-shadow: 0 6px 15px #EFEFF7;
+    margin: 0 0.5rem 1rem;
+    border-radius: 0.75rem !important;
+}
+
+.list-group-horizontal .list-group-item.active {
+    border: 2px solid #f65f9c;
+    background-color: #ffffff;
+    color: #4B4279;
+}
+
 /* end list style */
 
 /* start filter-sidebar style */
@@ -240,17 +266,14 @@ a:hover, a:focus {
 
 .right.sider .close {
     position: absolute;
-    top: .25rem;
+    top: -.25rem;
     right: 1rem;
     cursor: pointer;
     background-color: #5A33E4;
     color: #ffffff;
     opacity: 1;
     padding: 0.5rem;
-    border-top-left-radius: 5.5rem;
-    border-top-right-radius: 3.5rem;
-    border-bottom-left-radius: 3rem;
-    border-bottom-right-radius: 3rem;
+    border-radius: 100% 50% 50% 100%/75% 69% 69% 75%;
 }
 
 .sider-backdrop.show {

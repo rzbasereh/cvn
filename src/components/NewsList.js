@@ -14,37 +14,64 @@ import {FiX} from 'react-icons/fi';
 import {connect} from "react-redux";
 import ReactTimeAgo from 'react-time-ago'
 import {Link} from "react-router-dom";
+import { SphereSpinner } from "react-spinners-kit";
 
-const rows = 10;
-const covers = Array(rows).fill(1);
+import us from '../assets/images/svg/flags/us.svg';
+
+const langList = [
+    {
+        key: 'us',
+        name: 'United States',
+        img: us
+    }
+];
+const pageSize = 3;
+const covers = Array(pageSize).fill(1);
+
 
 class NewsList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
-            articles: [],
+            articles: {
+                data: [],
+                total: 0,
+                loading: true,
+                loadingmore: false
+            },
+            sourcesList: {
+                loading: false,
+                data: []
+            },
+
+            page: 1,
             filter_toggle: false,
             sources: "",
             language: "",
-            sortBy: "publishedAt"
+            sortBy: "publishedAt",
         }
     }
 
     componentDidMount() {
-        this.getNews();
+        this.getNews(false);
+        this.getSources();
     }
 
-    //  GET latest news base on user filter and ordering
-    getNews = () => {
+    //  GET latest news base on user filter and orderinglangList
+    getNews = (loadingmore) => {
         this.setState({
             ...this.state,
-            loading: true
+            articles: {
+                ...this.state.articles,
+                loading: !loadingmore
+            }   
         }, 
-        () => axios.get('http://newsapi.org/v2/top-headlines', {
+        () => axios.get('https://newsapi.org/v2/everything', {
                     params: {
                         q: 'COVID Vaccine',
                         apiKey: "7beb18d93a494e3ca347e870561b7045",
+                        pageSize: pageSize,
+                        page: this.state.page,
                         sources: this.state.sources,
                         language: this.state.language,
                         sortBy: this.state.sortBy
@@ -53,19 +80,74 @@ class NewsList extends React.Component {
                 .then((res) => {
                     this.setState({
                         ...this.state,
-                        articles: res.data.articles,
-                        loading: false
+                        articles: {
+                            data: [...this.state.articles.data, ...res.data.articles],
+                            total: res.data.totalResults,
+                            loading: false,
+                            loadingmore: false
+                        }
+                    });
+                })
+                .catch(function (err) {
+                    // this.setState({
+                    //     ...this.state,
+                    //     articles: {
+                    //         ...this.state.articles,
+                    //         loading: false,
+                    //         loadingmore: false
+                    //     }
+                    // });
+                })
+        )
+    };
+
+    getSources = () => {
+        this.setState({
+            ...this.state,
+            sourcesList: {
+                ...this.state.sourcesList,
+                loading: true
+            }   
+        }, 
+        () => axios.get('https://newsapi.org/v2/sources', {
+                    params: {
+                        apiKey: "7beb18d93a494e3ca347e870561b7045",
+                    }
+                })
+                .then((res) => {
+                    this.setState({
+                        ...this.state,
+                        sourcesList: {
+                            data: res.data.sources,
+                            loading: false
+                        }
                     });
                 })
                 .catch(function (err) {
                     this.setState({
                         ...this.state,
-                        loading: false
+                        sourcesList: {
+                            ...this.state.sourcesList,
+                            loading: false
+                        }
                     });
                 })
-        )
+        )  
     };
 
+    handleLoadMore = () => {
+        if(this.state.articles.total > this.state.articles.data.length) {
+                this.setState({
+                    ...this.state,
+                    articles: {
+                        ...this.state.articles,
+                        loadingmore: true
+                    },
+                    page: this.state.page + 1
+                }, () => this.getNews(true)); 
+        }
+        
+    }
 
     //  Hanle change of sort value
     handleSort = (event) => {
@@ -73,7 +155,7 @@ class NewsList extends React.Component {
         this.setState({
             ...this.state,
             sortBy: sort
-        }, () => this.getNews());
+        }, () => this.getNews(false));
     };
 
     // Handle Filter Toggle
@@ -111,15 +193,39 @@ class NewsList extends React.Component {
                                     Filter
                                 </Button>
 
-                                <div className={this.state.filter_toggle ? "right sider p-2 show" : "right sider p-2"}>
+                                <div className={this.state.filter_toggle ? "right sider p-3 show" : "right sider p-2"}>
                                     <Row>
-                                        <Col>
-                                            <h4 className="p-2 sider-title">Filters</h4>
+                                        <Col xs={12}>
+                                            <h4 className="sider-title">Filters</h4>
                                             <div className="close" onClick={this.handleFilterToggle} >
                                                 <FiX/>
                                             </div>
                                         </Col>
-
+                                        <Col xs={12}>
+                                            <h6 className="pb-2 pt-4">languages</h6>
+                                            <ListGroup horizontal>
+                                                {
+                                                    langList.map(item => {
+                                                        <ListGroup.Item>
+                                                            <img alt={item.key} src={item.img}/>
+                                                        </ListGroup.Item>
+                                                    })
+                                                }
+                                            </ListGroup>
+                                        </Col>
+                                        <Col xs={12}>
+                                            <h6 className="pb-2 pt-4">sources</h6>
+                                            {this.state.sourcesList.data.concat}
+                                            <ListGroup horizontal>
+                                                {
+                                                    this.state.sourcesList.data.map(source => {
+                                                        <ListGroup.Item>
+                                                            {source.name}
+                                                        </ListGroup.Item>
+                                                    })
+                                                }
+                                            </ListGroup>
+                                        </Col>
                                         <Button variant='primary' className="apply-filter">Apply Filters</Button>
                                     </Row>
                                 </div>
@@ -131,7 +237,7 @@ class NewsList extends React.Component {
                     <Col>
                         <ListGroup>
                             {
-                                this.state.loading ? // Preview Loading until syncing news 
+                                this.state.articles.loading ? // Preview Loading until syncing news 
                                     covers.map(
                                         () =>   <ListGroup.Item className="my-2" action>
                                                     <Skeleton width={80} height={30} className="rounded-pill"/>
@@ -141,7 +247,7 @@ class NewsList extends React.Component {
                                                 </ListGroup.Item>
                                     )
                                 : 
-                                this.state.articles.map(
+                                this.state.articles.data.map(
                                     article =>
                                     <Link to={encodeURIComponent(article.title).replace(/\s+/g, '-').toLowerCase()}
                                           onClick={() => this.props.setArticle(article)}>
@@ -168,6 +274,21 @@ class NewsList extends React.Component {
                                 )
                             }
                         </ListGroup>
+                        {
+                            this.state.articles.loading ?
+                                ""
+                            :
+                                <div className="text-center mt-3" style={{ display: "block ruby" }}>
+                                    {this.state.articles.loadingmore ? 
+                                        <div className="d-flex bg-secondary px-5 py-2 rounded-pill">
+                                            <SphereSpinner size={25} color="#5A33E4" loading />
+                                            <span className="ml-3">Loading</span>
+                                        </div>
+                                    :
+                                        <Button className="px-4" onClick={this.handleLoadMore}>Load More</Button>
+                                    }
+                                </div>
+                        }
                     </Col>
                 </Row>
             </div>
