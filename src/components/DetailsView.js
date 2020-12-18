@@ -1,4 +1,5 @@
 import React from "react";
+import Skeleton from 'react-loading-skeleton';
 import {
     Col,
     Container,
@@ -16,9 +17,17 @@ class DetailsView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            closeMode: 0
+            closeMode: 0,
+            loaded: false
         }
     }
+
+    handleToggleLoad = () => {
+        this.setState({
+            ...this.state,
+            loaded: !this.state.loaded
+        });
+    };
     
     render() {
         return (
@@ -41,11 +50,22 @@ class DetailsView extends React.Component {
                     </Row>
                     <div className="px-2 px-md-4">
                         <Row className="bg-secondary rounded-3 px-2 py-4 px-md-4 ">
-                            <Col lg={6}>
-                                <img className="rounded-3 mb-3 mb-lg-0" src={this.props.article.urlToImage} alt=""
-                                     style={{width: "100%"}}/>
-                            </Col>
-                            <Col lg={6}>
+                            {
+                                this.props.article.urlToImage ?
+                                    <Col lg={6}>
+                                        {
+                                            this.state.loaded ? 
+                                                null
+                                            :
+                                                <Skeleton height={250} className="rounded-3"/>
+                                        }
+                                        <img className={"rounded-3 mb-3 mb-lg-0 " + (this.state.loaded ? "" : "d-none")} src={this.props.article.urlToImage} alt=""
+                                            style={{width: "100%"}} onLoad={this.handleToggleLoad}/>
+                                    </Col>
+                                :
+                                    null
+                            }
+                            <Col lg={this.props.article.urlToImage ? 6 : 12}>
                                 <h3>{this.props.article.title}</h3>
                                 <p className="text-secondary">{this.props.article.description}</p>
                                 <div className="clearfix">
