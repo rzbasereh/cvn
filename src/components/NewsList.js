@@ -166,10 +166,6 @@ class NewsList extends React.Component {
 
     filterHasChange = () => {
         let isChanged = false;
-        console.log(this.state.filter.sources);
-        console.log(this.state.sources);
-        console.log(this.state.filter.languages);
-        console.log(this.state.languages);
         if (JSON.stringify(this.state.filter.sources) !== JSON.stringify(this.state.sources) ||
             JSON.stringify(this.state.filter.languages) !== JSON.stringify(this.state.languages)) {
             isChanged = true;
@@ -304,6 +300,10 @@ class NewsList extends React.Component {
             ...this.state,
             sources: this.state.filter.sources,
             languages: this.state.filter.languages,
+            sourcesList: {
+                ...this.state.sourcesList,
+                founded: this.state.sourcesList.data
+            }, 
             filter: {
                 ...this.state.filter,
                 toggle: false
@@ -312,12 +312,19 @@ class NewsList extends React.Component {
     };
 
     handleCancelFilter = () => {
-
+        this.setState({
+            ...this.state,
+            filter: {
+                ...this.state.filter,
+                languages: [],
+                sources: []
+            }
+        },() => this.handleApplyFilter());
     }
 
     render() {
 
-        const filterContainer = <div className={this.state.filter.toggle ? "right sider show" : "right sider"}>
+        const filterContainer = <div className={"right sider " + (this.state.filter.toggle ? " show " : "") + (this.state.filter.changed || this.state.sources.length || this.state.languages.length ? "has-btn" : "")}>
             <div className="sider-header">
                 <Row>
                     <Col xs={12}>
@@ -431,13 +438,13 @@ class NewsList extends React.Component {
                         className={this.state.filter.changed && this.state.filter.toggle  ? "apply-filter show" : "apply-filter"}>
                         Apply Filters
                     </Button> 
-                    <Button variant='secondary' onClick={this.handleCancelFilter}
+                    <Button variant='outline-primary' onClick={this.handleCancelFilter}
                         className={
-                            this.state.filter.changed && this.state.filter.toggle && this.state.languages.length && this.state.sources.length ?
-                                "cancel-filter" : "cancel-filter show"
+                            !this.state.filter.changed && (this.state.languages.length || this.state.sources.length) ?
+                                "cancel-filter show" : "cancel-filter"
                             }>
                         Cancel Filters
-                    </Button> 
+                    </Button>
                 </Row>
             </div>
         </div>;
