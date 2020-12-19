@@ -66,7 +66,7 @@ class DetailsView extends React.Component {
                                             this.state.loaded ? 
                                                 null
                                             :
-                                                <Skeleton height={250} className="rounded-3"/>
+                                                <Skeleton height={250} className="rounded-3 mb-3 mb-lg-0"/>
                                         }
                                         <img className={"rounded-3 mb-3 mb-lg-0 " + (this.state.loaded ? "" : "d-none")} src={this.props.article.urlToImage} alt=""
                                             style={{width: "100%"}} onLoad={this.handleToggleLoad}/>

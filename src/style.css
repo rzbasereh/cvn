@@ -684,3 +684,24 @@ select::after {
         transform: translateY(-10px);
     }
 }
+
+/* start scroll bar style */
+ /* width */
+ ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #F7FAFE;
+    border-radius: 5rem;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #5A33E4;
+    border-radius: 5rem;
+    cursor: pointer;
+    opacity: 0.75;
+  }
+/* end scroll bar style */

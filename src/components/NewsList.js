@@ -70,7 +70,7 @@ class NewsList extends React.Component {
             ...this.state,
             articles: {
                 ...this.state.articles,
-                loading: !loadingmore
+                loading: !loadingmore, 
             }   
         }, () => {
             let sources = [];
@@ -197,6 +197,7 @@ class NewsList extends React.Component {
         let sort = event.target.value;
         this.setState({
             ...this.state,
+            page: 1,
             sortBy: sort
         }, () => this.getNews(false));
     };
@@ -309,6 +310,7 @@ class NewsList extends React.Component {
             ...this.state,
             sources: this.state.filter.sources,
             language: this.state.filter.language,
+            page: 1,
             sourcesList: {
                 ...this.state.sourcesList,
                 founded: this.state.sourcesList.data
@@ -532,17 +534,18 @@ class NewsList extends React.Component {
                                 </div>  
                         }
                         {
-                            this.state.articles.loading || !this.state.articles.data.length ?
+                            this.state.articles.loading || this.state.articles.total === 0 || (this.state.articles.total <= this.state.page * pageSize) ?
                                 null
                             :
                                 <div className="text-center mt-3 mx-auto" style={{width: "203px" }}>
-                                    {this.state.articles.loadingmore ? 
-                                        <div className="d-flex bg-secondary px-5 py-2 rounded-pill">
-                                            <SphereSpinner size={25} color="#5A33E4" loading />
-                                            <span className="ml-3">Loading</span>
-                                        </div>
-                                    :
-                                        <Button className="px-4" onClick={this.handleLoadMore}>Load More</Button>
+                                    {
+                                        this.state.articles.loadingmore ? 
+                                            <div className="d-flex bg-secondary px-5 py-2 rounded-pill">
+                                                <SphereSpinner size={25} color="#5A33E4" loading />
+                                                <span className="ml-3">Loading</span>
+                                            </div>
+                                        :
+                                            <Button className="px-4" onClick={this.handleLoadMore}>Load More</Button>
                                     }
                                 </div>
                         }
