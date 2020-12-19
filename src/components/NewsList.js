@@ -478,46 +478,53 @@ class NewsList extends React.Component {
                         </div>
                     </Col>
                     <Col>
-                        <ListGroup className="news-list">
-                            {
-                                this.state.articles.loading ? // Preview Loading until syncing news 
-                                    covers.map(
-                                        () =>   <ListGroup.Item className="my-2" action>
-                                                    <Skeleton width={80} height={30} className="rounded-pill"/>
-                                                    <Skeleton height={30} className="mb-2"/>
-                                                    <Skeleton width={70} className="mr-2" />
-                                                    <Skeleton width={100}/>
+                        {
+                            this.state.articles.data.length || this.state.articles.loading ?
+                                <ListGroup className="news-list">
+                                    { 
+                                        this.state.articles.loading ? // Preview Loading until syncing news 
+                                            covers.map(
+                                                () =>   <ListGroup.Item className="my-2" action>
+                                                            <Skeleton width={80} height={30} className="rounded-pill"/>
+                                                            <Skeleton height={30} className="mb-2"/>
+                                                            <Skeleton width={70} className="mr-2" />
+                                                            <Skeleton width={100}/>
+                                                        </ListGroup.Item>
+                                            )
+                                        : 
+                                        this.state.articles.data.map(
+                                            article =>
+                                            <Link to={encodeURIComponent(article.title).replace(/\s+/g, '-').toLowerCase()}
+                                                onClick={() => this.props.setArticle(article)}>
+                                                <ListGroup.Item className="my-2" action>
+                                                    <Badge variant="primary" className="mb-2">{article.source.name}</Badge>
+
+                                                    <h4>
+                                                        {article.title}
+                                                    </h4>
+
+                                                    <div className="d-md-flex">
+                                                        {
+                                                            article.author === null ?
+                                                                ""
+                                                                :
+                                                                <div className="text-info mr-3">{article.author}</div>
+                                                        }
+                                                        <div className="text-secondary text-nowrap">
+                                                            <ReactTimeAgo date={article.publishedAt} locale="en-US"/>
+                                                        </div>
+                                                    </div>
+
                                                 </ListGroup.Item>
-                                    )
-                                : 
-                                this.state.articles.data.map(
-                                    article =>
-                                    <Link to={encodeURIComponent(article.title).replace(/\s+/g, '-').toLowerCase()}
-                                          onClick={() => this.props.setArticle(article)}>
-                                        <ListGroup.Item className="my-2" action>
-                                            <Badge variant="primary" className="mb-2">{article.source.name}</Badge>
-
-                                            <h4>
-                                                {article.title}
-                                            </h4>
-
-                                            <div className="d-md-flex">
-                                                {
-                                                    article.author === null ?
-                                                        ""
-                                                        :
-                                                        <div className="text-info mr-3">{article.author}</div>
-                                                }
-                                                <div className="text-secondary text-nowrap">
-                                                    <ReactTimeAgo date={article.publishedAt} locale="en-US"/>
-                                                </div>
-                                            </div>
-
-                                        </ListGroup.Item>
-                                    </Link>
-                                )
-                            }
-                        </ListGroup>
+                                            </Link>
+                                        )
+                                    }
+                                </ListGroup>
+                            :
+                                <div className="text-center">
+                                    <h1>No Result Found!</h1>
+                                </div>  
+                        }
                         {
                             this.state.articles.loading || !this.state.articles.data.length ?
                                 null
