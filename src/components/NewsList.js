@@ -119,6 +119,8 @@ class NewsList extends React.Component {
         )
     };
 
+
+    // Function to get all sources from api (containing languages and sources)
     getSources = () => {
         this.setState({
             ...this.state,
@@ -164,6 +166,8 @@ class NewsList extends React.Component {
         )  
     };
 
+
+    // Func to detect changing in filter options
     filterHasChange = () => {
         let isChanged = false;
         if (JSON.stringify(this.state.filter.sources) !== JSON.stringify(this.state.sources) ||
@@ -173,6 +177,7 @@ class NewsList extends React.Component {
         return isChanged;
     }
 
+    // Fanc to handle load more action
     handleLoadMore = () => {
         if(this.state.articles.total > this.state.articles.data.length) {
                 this.setState({
@@ -307,7 +312,10 @@ class NewsList extends React.Component {
                 ...this.state.filter,
                 toggle: false
             }
-        },() => this.getNews(false));
+        },() => {
+            document.body.classList.remove('overflow-hidden');
+            this.getNews(false);
+        });
     };
 
     handleCancelFilter = () => {
@@ -318,7 +326,10 @@ class NewsList extends React.Component {
                 language: "",
                 sources: []
             }
-        },() => this.handleApplyFilter());
+        },() => {
+            document.body.classList.remove('overflow-hidden');
+            this.handleApplyFilter();
+        });
     }
 
     render() {
@@ -508,8 +519,8 @@ class NewsList extends React.Component {
                             }
                         </ListGroup>
                         {
-                            this.state.articles.loading ?
-                                ""
+                            this.state.articles.loading || !this.state.articles.data.length ?
+                                null
                             :
                                 <div className="text-center mt-3" style={{ display: "block ruby" }}>
                                     {this.state.articles.loadingmore ? 
