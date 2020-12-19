@@ -4,6 +4,7 @@ body {
     color: #4B4279;
     background-color: #F7FAFE;
     font-family: 'Poppins Regular';
+    overflow-x: hidden;
 }
 
 a {
@@ -46,6 +47,33 @@ a:hover, a:focus {
 }
 
 /* end scroll-header */
+
+
+/* website header design */
+.hader-image {
+    position: absolute;
+    top: -10vh;
+    right: -35px;
+    height: 60vh;
+    z-index: -1;
+}
+
+.covid-statistics {
+    width: 30%;
+}
+
+@media(max-width: 768px) {
+    .hader-image {
+        /* right: -190px; */
+        display: none;
+    }   
+
+    .covid-statistics {
+        width: 100%;
+    }
+}
+
+/* end website header */
 
 /* start card design */
 .card {

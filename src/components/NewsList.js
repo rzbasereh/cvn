@@ -223,6 +223,7 @@ class NewsList extends React.Component {
         }
     }
 
+    // Func to handle language selecting
     handleLanguageSelect = (lang) => {
         this.setState({
             ...this.state,
@@ -241,6 +242,7 @@ class NewsList extends React.Component {
         });
     }
 
+    //  Func to handle source selecting 
     handleSourceSelect = (source) => {
         let sources = Array.from(new Set([...this.state.filter.sources, source]));
         this.setState({
@@ -260,6 +262,8 @@ class NewsList extends React.Component {
         });
     }
 
+
+    // handle search source in filter sider
     handleSourceSearch = (event) => {
         let value = event.target.value.toString().toLowerCase();
         let result = this.state.sourcesList.data.filter(source => source.name.toLowerCase().includes(value));
@@ -272,6 +276,7 @@ class NewsList extends React.Component {
         });
     }
 
+    // handle delete filter selecting items
     handleDelete = (item, mode) => {
         let language = this.state.filter.language;
         let sources = this.state.filter.sources;
@@ -298,7 +303,7 @@ class NewsList extends React.Component {
         });
     };
 
-
+    // handle changed filter apply
     handleApplyFilter = () => {
         this.setState({
             ...this.state,
@@ -318,6 +323,7 @@ class NewsList extends React.Component {
         });
     };
 
+    // hadle delete all filters and reload data
     handleCancelFilter = () => {
         this.setState({
             ...this.state,
@@ -333,7 +339,7 @@ class NewsList extends React.Component {
     }
 
     render() {
-
+        // filter container (sidder)
         const filterContainer = <div className={"right sider " + (this.state.filter.toggle ? " show " : "") + (this.state.filter.changed || this.state.sources.length || this.state.language ? "has-btn" : "")}>
             <div className="sider-header">
                 <Row>

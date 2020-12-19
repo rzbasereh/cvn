@@ -8,6 +8,7 @@ import {
 
 } from "react-bootstrap";
 import Logo from '../Logo.png';
+import DoctorCovid from '../assets/images/svg/doctor_vaccine.svg';
 import virus from '../assets/images/svg/virus.svg';
 import NewsList from "./NewsList";
 import {FiTrendingDown, FiTrendingUp} from 'react-icons/fi';
@@ -107,9 +108,10 @@ class Home extends React.Component {
                         </Col>
                     </Row>
                     <Row>
-                        {/* <Col lg={12}>
-                            <Card>
-                                <Card.Body>
+                        <Col lg={12}>
+                            {/* <Card>
+                                <Card.Body> */}
+                                <div className="covid-statistics">
                                     <Alert variant="success">
                                         <span>Recover</span>
                                         <div className="clearfix">
@@ -131,9 +133,13 @@ class Home extends React.Component {
                                             <FiTrendingDown className="float-right text-danger"/>
                                         </div>
                                     </Alert>
-                                </Card.Body>
-                            </Card>
-                        </Col> */}
+                                </div>
+                                    
+                                {/* </Card.Body>
+                            </Card> */}
+
+                            <img src={DoctorCovid} className="hader-image"/>
+                        </Col>
                         <Col>
                             <NewsList/>
                             <img className="virus-ill" src={virus} style={{opacity: this.state.virusOpacity}} alt=""/>
