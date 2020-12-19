@@ -474,6 +474,25 @@ button:focus {
     border-right: none;
 }
 
+select {
+    position: relative;
+    cursor: pointer;
+    border-radius: 5rem !important;
+    border: none !important;
+    box-shadow: 0 6px 26px #EFEFF7;
+    appearance: initial;
+    text-align: center;
+}
+
+select::after {
+    content: "-";
+    position:absolute;
+    top: 50%;
+    right: 1px;
+    width: 5px;
+    height: 5px;
+}
+
 /* end input style */
 
 /* start slider close style */
