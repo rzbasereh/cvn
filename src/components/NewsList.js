@@ -522,7 +522,7 @@ class NewsList extends React.Component {
                             this.state.articles.loading || !this.state.articles.data.length ?
                                 null
                             :
-                                <div className="text-center mt-3" style={{ display: "block ruby" }}>
+                                <div className="text-center mt-3 mx-auto" style={{width: "203px" }}>
                                     {this.state.articles.loadingmore ? 
                                         <div className="d-flex bg-secondary px-5 py-2 rounded-pill">
                                             <SphereSpinner size={25} color="#5A33E4" loading />
