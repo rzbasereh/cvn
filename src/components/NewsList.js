@@ -48,13 +48,13 @@ class NewsList extends React.Component {
             filter: {
                 toggle: false,
                 sources: [],
-                languages: [],
+                language: "",
                 changed: false
             },
 
             page: 1,
             sources: [],
-            languages: [],
+            language: "",
             sortBy: "publishedAt",
         }
     }
@@ -85,7 +85,7 @@ class NewsList extends React.Component {
                         pageSize: pageSize,
                         page: this.state.page,
                         sources: sources.join(','),
-                        language: this.state.languages.join(','),
+                        language: this.state.language,
                         sortBy: this.state.sortBy
                     }
                 })
@@ -167,7 +167,7 @@ class NewsList extends React.Component {
     filterHasChange = () => {
         let isChanged = false;
         if (JSON.stringify(this.state.filter.sources) !== JSON.stringify(this.state.sources) ||
-            JSON.stringify(this.state.filter.languages) !== JSON.stringify(this.state.languages)) {
+            this.state.filter.language !== this.state.language) {
             isChanged = true;
         }
         return isChanged;
@@ -219,12 +219,11 @@ class NewsList extends React.Component {
     }
 
     handleLanguageSelect = (lang) => {
-        let langs = Array.from(new Set([...this.state.filter.languages, lang]));
         this.setState({
             ...this.state,
             filter: {
                 ...this.state.filter,
-                languages: langs,
+                language: lang,
             }
         }, () => {
             this.setState({
@@ -269,19 +268,19 @@ class NewsList extends React.Component {
     }
 
     handleDelete = (item, mode) => {
-        let languages = this.state.filter.languages;
+        let language = this.state.filter.language;
         let sources = this.state.filter.sources;
         if (mode === "source") {
             sources = this.state.filter.sources.filter(source => item !== source);
         } else {
-            languages = this.state.filter.languages.filter(lang => item !== lang);
+            language = "";
         }
         this.setState({
             ...this.state,
             filter: {
                 ...this.state.filter,
                 sources: sources,
-                languages: languages,
+                language: language,
             }
         }, () => {
             this.setState({
@@ -299,7 +298,7 @@ class NewsList extends React.Component {
         this.setState({
             ...this.state,
             sources: this.state.filter.sources,
-            languages: this.state.filter.languages,
+            language: this.state.filter.language,
             sourcesList: {
                 ...this.state.sourcesList,
                 founded: this.state.sourcesList.data
@@ -316,7 +315,7 @@ class NewsList extends React.Component {
             ...this.state,
             filter: {
                 ...this.state.filter,
-                languages: [],
+                language: "",
                 sources: []
             }
         },() => this.handleApplyFilter());
@@ -324,7 +323,7 @@ class NewsList extends React.Component {
 
     render() {
 
-        const filterContainer = <div className={"right sider " + (this.state.filter.toggle ? " show " : "") + (this.state.filter.changed || this.state.sources.length || this.state.languages.length ? "has-btn" : "")}>
+        const filterContainer = <div className={"right sider " + (this.state.filter.toggle ? " show " : "") + (this.state.filter.changed || this.state.sources.length || this.state.language ? "has-btn" : "")}>
             <div className="sider-header">
                 <Row>
                     <Col xs={12}>
@@ -351,13 +350,13 @@ class NewsList extends React.Component {
                                 :
                                     this.state.langsList.data.map(lang => {
                                         let isActive = false;
-                                        if (this.state.filter.languages.find(item => item === lang)) {
+                                        if (this.state.filter.language === lang) {
                                             isActive = true;
                                         }
                                         let itemInfo = languageMenu.find(value => value.key === lang);
                                         return (
                                             <ListGroup.Item className="text-center" action active={isActive} 
-                                                onClick={() => this.handleLanguageSelect(lang)}>
+                                                onClick={() => {isActive ? this.handleDelete(lang, "lang") : this.handleLanguageSelect(lang)}}>
                                                 <ReactCountryFlag 
                                                     countryCode={itemInfo.code} 
                                                     svg
@@ -372,14 +371,6 @@ class NewsList extends React.Component {
                                     })
                             }
                         </ListGroup>
-                        {
-                            this.state.filter.languages.map(lang =>
-                                <div className="tag-item">
-                                    <span>{languageMenu.find(item => item.key === lang).title}</span>
-                                    <FiX className="close" onClick={() => this.handleDelete(lang, "lang")}/>
-                                </div>
-                            )
-                        }
                     </Col>
                     <Col xs={12}>
                         <h6 className="pb-2 pt-4">sources</h6>
@@ -440,7 +431,7 @@ class NewsList extends React.Component {
                     </Button> 
                     <Button variant='outline-primary' onClick={this.handleCancelFilter}
                         className={
-                            !this.state.filter.changed && (this.state.languages.length || this.state.sources.length) ?
+                            !this.state.filter.changed && (this.state.language || this.state.sources.length) ?
                                 "cancel-filter show" : "cancel-filter"
                             }>
                         Cancel Filters

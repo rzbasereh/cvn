@@ -22,6 +22,15 @@ class DetailsView extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.state.props !== this.state.prevProps) {
+            this.setState({
+                ...this.state,
+                loaded: false
+            });
+        }
+    }
+
     handleToggleLoad = () => {
         this.setState({
             ...this.state,
